@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
               listener: (context, state) {},
               builder: (context, state) => pages[state.index],
             ),
-            HomePageNavBar(),
+            const HomePageNavBar(),
           ],
         ),
       ),

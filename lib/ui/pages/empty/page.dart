@@ -11,7 +11,7 @@ class EmptyPage extends StatelessWidget {
       body: Center(
         child: Text(
           title,
-          style: TextStyle(fontSize: 50),
+          style: const TextStyle(fontSize: 50),
         ),
       ),
     );

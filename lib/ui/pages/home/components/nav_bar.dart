@@ -16,7 +16,7 @@ class HomePageNavBar extends StatelessWidget {
     return Align(
       alignment: Alignment.centerLeft,
       child: DecoratedBox(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: CustomColors.purple,
           image: DecorationImage(
             image: AssetImage(CustomImagesAssets.sideBar),
