@@ -1,3 +1,4 @@
+export 'background.dart';
 export 'claim_all_rewards.dart';
 export 'close_button.dart';
 export 'experience_bar.dart';

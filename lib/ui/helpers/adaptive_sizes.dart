@@ -33,7 +33,7 @@ extension AdaptiveSizesInt on int {
   //   return this * math.min(widthScale, heightScale);
   // }
 
-  double get calculate {
+  double get calc {
     final view = PlatformDispatcher.instance.views.first;
 
     final width = view.physicalSize.width / view.devicePixelRatio;

@@ -26,7 +26,7 @@ class HomePageNavBar extends StatelessWidget {
         child: SafeArea(
           right: false,
           child: SizedBox(
-            width: 160.calculate,
+            width: 160.calc,
             child: BlocConsumer<HomeCubit, HomeState>(
               listener: (context, state) {},
               builder: (context, state) {

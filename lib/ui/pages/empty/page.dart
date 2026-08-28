@@ -7,12 +7,10 @@ class EmptyPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text(
-          title,
-          style: const TextStyle(fontSize: 50),
-        ),
+    return Center(
+      child: Text(
+        title,
+        style: const TextStyle(fontSize: 50),
       ),
     );
   }

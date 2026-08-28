@@ -21,8 +21,8 @@ class HomePageIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final iconSize = 72.calculate;
-    final buttonSize = 120.calculate;
+    final iconSize = 72.calc;
+    final buttonSize = 120.calc;
 
     return InkWell(
       onTap: onTap,
@@ -65,7 +65,7 @@ class HomePageIcon extends StatelessWidget {
               textAlign: .center,
               style: TextStyle(
                 height: 1,
-                fontSize: 22.calculate,
+                fontSize: 22.calc,
                 fontWeight: .w400,
                 color: isActive ? CustomColors.white : CustomColors.gray,
               ),
