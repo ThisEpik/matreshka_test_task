@@ -3,4 +3,5 @@ abstract final class ImagesAssets {
   static const bpUpgrade = 'assets/images/bp_upgrade.png';
   static const sideBar = 'assets/images/side_bar.png';
   static const womanCocktail = 'assets/images/woman_cocktail.png';
+  static const xp = 'assets/images/xp.png';
 }

@@ -36,7 +36,7 @@ class HomePageIcon extends StatelessWidget {
               children: [
                 CustomSvgPicture(
                   iconPath: iconPath,
-                  color: isActive ? CustomColors.white.withValues(alpha: 1) : CustomColors.gray,
+                  color: isActive ? CustomColors.white.withValues(alpha: 1) : CustomColors.gray1,
                   width: iconSize,
                   height: iconSize,
                 ),
@@ -65,7 +65,7 @@ class HomePageIcon extends StatelessWidget {
                 height: 1,
                 fontSize: 22.calc,
                 fontWeight: .w400,
-                color: isActive ? CustomColors.white : CustomColors.gray,
+                color: isActive ? CustomColors.white : CustomColors.gray1,
               ),
             ),
           ],

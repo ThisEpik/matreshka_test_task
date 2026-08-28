@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:matreshka_test_task/ui/global_components/custom_image_asset.dart';
 import 'package:matreshka_test_task/ui/global_components/custom_svg_picture.dart';
 import 'package:matreshka_test_task/ui/helpers/adaptive_sizes.dart';
+import 'package:matreshka_test_task/ui/kit/app_dimensions.dart';
 import 'package:matreshka_test_task/ui/kit/colors.dart';
 import 'package:matreshka_test_task/ui/kit/images.dart';
 import 'package:matreshka_test_task/ui/kit/svg_icons.dart';
@@ -235,7 +236,7 @@ class _Button extends StatelessWidget {
         width: 400.calc,
         height: 100.calc,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30.calc),
+          borderRadius: BorderRadius.circular(AppDimensions.radius30),
           gradient: isEnabled
               ? const LinearGradient(
                   begin: Alignment.topCenter,
