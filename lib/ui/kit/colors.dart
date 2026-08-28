@@ -4,9 +4,11 @@ abstract final class CustomColors {
   static const transparent = Colors.transparent;
   static const purple = Color.fromRGBO(21, 23, 39, 0.7);
   static const white = Color.fromRGBO(255, 255, 255, 1);
+  static const white5 = Color.fromRGBO(233, 233, 243, 0.05);
   static const white10 = Color.fromRGBO(233, 233, 243, 0.1);
   static const white40 = Color.fromRGBO(233, 233, 243, 0.4);
   static const white60 = Color.fromRGBO(233, 233, 243, 0.6);
+  static const white100 = Color.fromRGBO(233, 233, 243, 1);
   static const gray = Color.fromRGBO(233, 233, 243, 0.4);
   static const red = Color.fromRGBO(215, 39, 0, 1);
   static const backgroundColor = Color(0xFF2d2e34);

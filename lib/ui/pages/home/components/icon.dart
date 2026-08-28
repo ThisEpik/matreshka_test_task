@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:matreshka_test_task/ui/global_components/custom_svg_picture.dart';
 import 'package:matreshka_test_task/ui/helpers/adaptive_sizes.dart';
 import 'package:matreshka_test_task/ui/kit/colors.dart';
 
@@ -34,15 +34,13 @@ class HomePageIcon extends StatelessWidget {
             Stack(
               alignment: .center,
               children: [
-                SvgPicture.asset(
-                  iconPath,
-                  colorFilter: ColorFilter.mode(
-                    isActive ? CustomColors.white.withValues(alpha: 1) : CustomColors.gray,
-                    .srcIn,
-                  ),
+                CustomSvgPicture(
+                  iconPath: iconPath,
+                  color: isActive ? CustomColors.white.withValues(alpha: 1) : CustomColors.gray,
                   width: iconSize,
                   height: iconSize,
                 ),
+
                 Positioned(
                   top: 0,
                   right: 0,

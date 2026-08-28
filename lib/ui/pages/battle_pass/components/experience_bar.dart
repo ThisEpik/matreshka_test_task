@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:matreshka_test_task/ui/global_components/custom_svg_picture.dart';
 import 'package:matreshka_test_task/ui/global_components/xp_bar.dart';
 import 'package:matreshka_test_task/ui/helpers/adaptive_sizes.dart';
 import 'package:matreshka_test_task/ui/kit/app_dimensions.dart';
@@ -31,8 +31,8 @@ class BattlePassPageExperienceBar extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    SvgPicture.asset(
-                      CustomSvgIconsAssets.timer,
+                    CustomSvgPicture(
+                      iconPath: CustomSvgIconsAssets.timer,
                       width: 32.calc,
                       height: 32.calc,
                     ),

@@ -10,6 +10,7 @@ class BattlePassPage extends StatelessWidget {
       children: [
         BattlePassPageBackground(),
         BattlePassPageExperienceBar(),
+        BattlePassPageCloseButton(),
       ],
     );
   }
