@@ -15,7 +15,7 @@ class HomePageNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.centerLeft,
-      child: Container(
+      child: DecoratedBox(
         decoration: BoxDecoration(
           color: CustomColors.purple,
           image: DecorationImage(
@@ -24,26 +24,30 @@ class HomePageNavBar extends StatelessWidget {
           ),
         ),
         child: SafeArea(
+          right: false,
           child: SizedBox(
             width: 160.calculate,
             child: BlocConsumer<HomeCubit, HomeState>(
               listener: (context, state) {},
               builder: (context, state) {
-                return Column(
-                  mainAxisAlignment: .spaceBetween,
-                  children: _elements
-                      .map(
-                        (e) => HomePageIcon(
-                          iconPath: e.iconPath,
-                          title: e.title,
-                          isActive: state.index == _elements.indexOf(e),
-                          isUnread: e.isUnread,
-                          onTap: () {
-                            context.read<HomeCubit>().changeTab(_elements.indexOf(e));
-                          },
-                        ),
-                      )
-                      .toList(),
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: .spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: _elements
+                        .map(
+                          (e) => HomePageIcon(
+                            iconPath: e.iconPath,
+                            title: e.title,
+                            isActive: state.index == _elements.indexOf(e),
+                            isUnread: e.isUnread,
+                            onTap: () {
+                              context.read<HomeCubit>().changeTab(_elements.indexOf(e));
+                            },
+                          ),
+                        )
+                        .toList(),
+                  ),
                 );
               },
             ),
