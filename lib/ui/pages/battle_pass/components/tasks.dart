@@ -12,6 +12,15 @@ class BattlePassPageTasks extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return const _Task();
+  }
+}
+
+class _Task extends StatelessWidget {
+  const _Task();
+
+  @override
+  Widget build(BuildContext context) {
     return Positioned(
       left: AppDimensions.navBarWidth + MediaQuery.viewPaddingOf(context).left + 51.calc,
       top: 220.calc,
