@@ -16,117 +16,175 @@ class BattlePassPagePremium extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<BattlePassCubit, BattlePassState>(
       builder: (context, state) {
-        switch (state.battlePassProgressionState) {
-          case BattlePassProgressionState.free:
-            return _Content(
-              imagePath: ImagesAssets.womanCocktail,
-              title: 'Элитный пропуск',
-              subTitle: 'Прокачай боевой пропуск и забери четкие скины, аксессуары и многое другое!',
-              buttonTitle: 'Прокачать',
-              buttonIconPath: SvgIconsAssets.crown,
-              isEnabled: true,
-              onTap: () {
-                context.read<BattlePassCubit>().changeBattlePassProgression(BattlePassProgressionState.inProgress);
-              },
-            );
-          case BattlePassProgressionState.inProgress:
-            return _Content(
-              imagePath: ImagesAssets.bpUpgrade,
-              title: 'Повышение уровня',
-              subTitle: 'Повышай уровень боевого пропуска и забирай новые награды!',
-              buttonTitle: 'Повысить уровень',
-              buttonIconPath: SvgIconsAssets.arrowUp,
-              isEnabled: true,
-              onTap: () {
-                context.read<BattlePassCubit>().changeBattlePassProgression(BattlePassProgressionState.complete);
-              },
-            );
-          case BattlePassProgressionState.complete:
-            return _Content(
-              imagePath: ImagesAssets.bpUpgrade,
-              title: 'Повышение уровня',
-              subTitle: 'Повышай уровень боевого пропуска и забирай новые награды!',
-              buttonTitle: 'Достигнут максимальный уровень',
-              isEnabled: false,
-              onTap: () {
-                context.read<BattlePassCubit>().changeBattlePassProgression(BattlePassProgressionState.free);
-              },
-            );
-        }
+        return Positioned(
+          right: 0,
+          top: 81.calc,
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 500),
+            reverseDuration: const Duration(milliseconds: 350),
+            switchInCurve: Curves.easeOutCubic,
+            switchOutCurve: Curves.easeInCubic,
+            layoutBuilder: (currentChild, previousChildren) {
+              return Stack(
+                alignment: Alignment.center,
+                children: [
+                  ...previousChildren,
+                  ?currentChild,
+                ],
+              );
+            },
+            transitionBuilder: (child, animation) {
+              final slideAnimation =
+                  Tween<Offset>(
+                    begin: const Offset(0.08, 0),
+                    end: Offset.zero,
+                  ).animate(
+                    CurvedAnimation(
+                      parent: animation,
+                      curve: Curves.easeOutCubic,
+                    ),
+                  );
+
+              final scaleAnimation =
+                  Tween<double>(
+                    begin: 0.96,
+                    end: 1,
+                  ).animate(
+                    CurvedAnimation(
+                      parent: animation,
+                      curve: Curves.easeOutCubic,
+                    ),
+                  );
+
+              return FadeTransition(
+                opacity: animation,
+                child: SlideTransition(
+                  position: slideAnimation,
+                  child: ScaleTransition(
+                    scale: scaleAnimation,
+                    child: child,
+                  ),
+                ),
+              );
+            },
+            child: KeyedSubtree(
+              key: ValueKey(state.battlePassProgressionState),
+              child: _Content(
+                progressionState: state.battlePassProgressionState,
+                onTap: () {
+                  final cubit = context.read<BattlePassCubit>();
+
+                  switch (state.battlePassProgressionState) {
+                    case BattlePassProgressionState.free:
+                      cubit.changeBattlePassProgression(
+                        BattlePassProgressionState.inProgress,
+                      );
+
+                    case BattlePassProgressionState.inProgress:
+                      cubit.changeBattlePassProgression(
+                        BattlePassProgressionState.complete,
+                      );
+
+                    case BattlePassProgressionState.complete:
+                      cubit.changeBattlePassProgression(
+                        BattlePassProgressionState.free,
+                      );
+                  }
+                },
+              ),
+            ),
+          ),
+        );
       },
     );
   }
 }
 
 class _Content extends StatelessWidget {
-  final String imagePath;
-  final String title;
-  final String subTitle;
+  final BattlePassProgressionState progressionState;
   final VoidCallback onTap;
-  final String buttonTitle;
-  final String? buttonIconPath;
-  final bool isEnabled;
 
   const _Content({
-    required this.imagePath,
-    required this.title,
-    required this.subTitle,
+    required this.progressionState,
     required this.onTap,
-    required this.buttonTitle,
-    this.buttonIconPath,
-    required this.isEnabled,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      right: 0,
-      top: 81.calc,
-      child: SizedBox(
-        width: 588.calc,
-        height: 589.calc,
-        child: Stack(
-          children: [
-            _Background(imagePath: imagePath),
-            Center(
-              child: Column(
-                mainAxisSize: .min,
-                children: [
-                  SizedBox(height: 200.calc),
-                  Text(
-                    title,
+    final config = switch (progressionState) {
+      BattlePassProgressionState.free => const _ContentConfig(
+        imagePath: ImagesAssets.womanCocktail,
+        title: 'Элитный пропуск',
+        subTitle: 'Прокачай боевой пропуск и забери четкие скины, аксессуары и многое другое!',
+        buttonTitle: 'Прокачать',
+        buttonIconPath: SvgIconsAssets.crown,
+        isEnabled: true,
+      ),
+      BattlePassProgressionState.inProgress => const _ContentConfig(
+        imagePath: ImagesAssets.bpUpgrade,
+        title: 'Повышение уровня',
+        subTitle: 'Повышай уровень боевого пропуска и забирай новые награды!',
+        buttonTitle: 'Повысить уровень',
+        buttonIconPath: SvgIconsAssets.arrowUp,
+        isEnabled: true,
+      ),
+      BattlePassProgressionState.complete => const _ContentConfig(
+        imagePath: ImagesAssets.bpUpgrade,
+        title: 'Повышение уровня',
+        subTitle: 'Повышай уровень боевого пропуска и забирай новые награды!',
+        buttonTitle: 'Достигнут максимальный уровень',
+        buttonIconPath: null,
+        isEnabled: false,
+      ),
+    };
+
+    return SizedBox(
+      width: 588.calc,
+      height: 589.calc,
+      child: Stack(
+        children: [
+          _Background(
+            imagePath: config.imagePath,
+            progressionState: progressionState,
+          ),
+          Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(height: 200.calc),
+                Text(
+                  config.title,
+                  style: TextStyle(
+                    color: CustomColors.yellow,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 36.calc,
+                  ),
+                ),
+                SizedBox(
+                  width: 400.calc,
+                  child: Text(
+                    config.subTitle,
+                    textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: CustomColors.yellow,
-                      fontWeight: .w600,
-                      fontSize: 36.calc,
+                      letterSpacing: -0.22,
+                      height: 1.2,
+                      color: CustomColors.white70,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 22.calc,
                     ),
                   ),
-                  SizedBox(
-                    width: 400.calc,
-                    child: Text(
-                      subTitle,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        letterSpacing: -0.22,
-                        height: 1.2,
-                        color: CustomColors.white70,
-                        fontWeight: .w500,
-                        fontSize: 22.calc,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 27.calc),
-                  _Button(
-                    onTap: onTap,
-                    title: buttonTitle,
-                    iconPath: buttonIconPath,
-                    isEnabled: isEnabled,
-                  ),
-                ],
-              ),
+                ),
+                SizedBox(height: 27.calc),
+                _Button(
+                  onTap: onTap,
+                  title: config.buttonTitle,
+                  iconPath: config.buttonIconPath,
+                  isEnabled: config.isEnabled,
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -134,26 +192,20 @@ class _Content extends StatelessWidget {
 
 class _Background extends StatelessWidget {
   final String imagePath;
+  final BattlePassProgressionState progressionState;
 
   const _Background({
     required this.imagePath,
+    required this.progressionState,
   });
 
   @override
   Widget build(BuildContext context) {
-    final state = context.watch<BattlePassCubit>().state;
-
-    if (state.battlePassProgressionState == BattlePassProgressionState.free) {
-      return Center(
-        child: CustomImageAsset(
-          assetPath: imagePath,
-        ),
-      );
-    }
+    final isFree = progressionState == BattlePassProgressionState.free;
 
     return Center(
       child: Padding(
-        padding: .only(bottom: 50.calc),
+        padding: isFree ? EdgeInsets.zero : EdgeInsets.only(bottom: 50.calc),
         child: CustomImageAsset(
           assetPath: imagePath,
         ),
@@ -178,44 +230,41 @@ class _Button extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTapDown: (_) => onTap(),
+      onTap: isEnabled ? onTap : null,
       child: Container(
         width: 400.calc,
         height: 100.calc,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30.calc),
-          gradient: const LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: CustomColors.yellowGradient,
-          ),
+          gradient: isEnabled
+              ? const LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: CustomColors.yellowGradient,
+                )
+              : null,
+          color: isEnabled ? null : CustomColors.white10,
         ),
         child: Row(
-          mainAxisAlignment: .center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Visibility(
-              visible: iconPath != null,
-              child: Row(
-                children: [
-                  CustomSvgPicture(
-                    iconPath: iconPath,
-                    color: CustomColors.brown,
-                    width: 36.calc,
-                    height: 36.calc,
-                  ),
-                  SizedBox(
-                    width: 24.calc,
-                  ),
-                ],
+            if (iconPath != null) ...[
+              CustomSvgPicture(
+                iconPath: iconPath,
+                color: CustomColors.brown,
+                width: 36.calc,
+                height: 36.calc,
               ),
-            ),
+              SizedBox(width: 24.calc),
+            ],
             Text(
               title,
-              style: const TextStyle(
+              style: TextStyle(
+                fontSize: isEnabled ? 30.calc : 22.calc,
                 height: 1.2,
                 letterSpacing: -0.22,
-                color: CustomColors.brown,
-                fontWeight: .w500,
+                color: isEnabled ? CustomColors.brown : CustomColors.white70,
+                fontWeight: FontWeight.w500,
               ),
             ),
           ],
@@ -223,4 +272,22 @@ class _Button extends StatelessWidget {
       ),
     );
   }
+}
+
+class _ContentConfig {
+  final String imagePath;
+  final String title;
+  final String subTitle;
+  final String buttonTitle;
+  final String? buttonIconPath;
+  final bool isEnabled;
+
+  const _ContentConfig({
+    required this.imagePath,
+    required this.title,
+    required this.subTitle,
+    required this.buttonTitle,
+    required this.buttonIconPath,
+    required this.isEnabled,
+  });
 }
