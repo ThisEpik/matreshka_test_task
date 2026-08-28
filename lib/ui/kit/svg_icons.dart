@@ -1,4 +1,5 @@
 abstract final class SvgIconsAssets {
+  static const arrowUp = 'assets/svg_icons/arrow_up.svg';
   static const calendar1 = 'assets/svg_icons/calendar1.svg';
   static const calendar2 = 'assets/svg_icons/calendar2.svg';
   static const close = 'assets/svg_icons/close.svg';

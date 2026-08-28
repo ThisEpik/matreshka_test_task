@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:matreshka_test_task/ui/kit/colors.dart';
 
 class CustomSvgPicture extends StatelessWidget {
-  final String iconPath;
+  final String? iconPath;
   final Color? color;
   final double? width;
   final double? height;
@@ -18,8 +18,12 @@ class CustomSvgPicture extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (iconPath == null) {
+      return const SizedBox.shrink();
+    }
+
     return SvgPicture.asset(
-      iconPath,
+      iconPath!,
       width: width,
       height: height,
       colorFilter: ColorFilter.mode(
