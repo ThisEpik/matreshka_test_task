@@ -6,13 +6,25 @@ class BattlePassPageBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
+    return Positioned.fill(
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final width = constraints.maxWidth;
 
-    return Image.asset(
-      ImagesAssets.battlePassBackground,
-      fit: BoxFit.cover,
-      width: size.width,
-      height: size.height,
+          return Transform.translate(
+            offset: Offset(-width * 0.06, 0),
+            child: Transform.scale(
+              scaleX: 1.2,
+              scaleY: 1.2,
+              child: Image.asset(
+                ImagesAssets.battlePassBackground,
+                fit: BoxFit.cover,
+                alignment: Alignment.center,
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }

@@ -23,9 +23,13 @@ abstract final class CustomColors {
     Color.fromRGBO(214, 58, 38, 1),
     Color.fromRGBO(239, 100, 41, 1),
   ];
-  static const yellowGradient = [
+  static const yellowGradient1 = [
     Color.fromRGBO(239, 203, 76, 1),
     Color.fromRGBO(222, 128, 41, 1),
+  ];
+  static const yellowGradient2 = [
+    Color.fromRGBO(239, 203, 76, 1),
+    Color.fromRGBO(246, 116, 60, 1),
   ];
   static const yellow = Color.fromRGBO(255, 209, 73, 1);
 }

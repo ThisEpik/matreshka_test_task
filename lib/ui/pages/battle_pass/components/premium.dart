@@ -241,7 +241,7 @@ class _Button extends StatelessWidget {
               ? const LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: CustomColors.yellowGradient,
+                  colors: CustomColors.yellowGradient1,
                 )
               : null,
           color: isEnabled ? null : CustomColors.white10,
