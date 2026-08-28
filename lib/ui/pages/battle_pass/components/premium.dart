@@ -18,7 +18,7 @@ class BattlePassPagePremium extends StatelessWidget {
     return BlocBuilder<BattlePassCubit, BattlePassState>(
       builder: (context, state) {
         return Positioned(
-          right: 0,
+          right: MediaQuery.viewPaddingOf(context).right,
           top: 81.calc,
           child: AnimatedSwitcher(
             duration: const Duration(milliseconds: 500),

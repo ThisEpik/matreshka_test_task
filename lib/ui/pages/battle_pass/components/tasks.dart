@@ -40,7 +40,7 @@ class _BattlePassPageTasksState extends State<BattlePassPageTasks> {
     pageController.animateToPage(
       index,
       duration: const Duration(milliseconds: 300),
-      curve: Curves.easeOutCubic,
+      curve: Curves.linear,
     );
   }
 
@@ -63,12 +63,12 @@ class _BattlePassPageTasksState extends State<BattlePassPageTasks> {
                 bottomRight: Radius.circular(AppDimensions.radius30),
               ),
             ),
-            child: Column(
-              mainAxisAlignment: .spaceEvenly,
-              children: [
-                BlocBuilder<BattlePassCubit, BattlePassState>(
-                  builder: (context, state) {
-                    return SizedBox(
+            child: BlocBuilder<BattlePassCubit, BattlePassState>(
+              builder: (context, state) {
+                return Column(
+                  mainAxisAlignment: .spaceEvenly,
+                  children: [
+                    SizedBox(
                       width: 340.calc,
                       height: 70.calc,
                       child: PageView.builder(
@@ -89,43 +89,36 @@ class _BattlePassPageTasksState extends State<BattlePassPageTasks> {
                           );
                         },
                       ),
-                    );
-                  },
-                ),
+                    ),
 
-                BlocBuilder<BattlePassCubit, BattlePassState>(
-                  builder: (context, state) {
-                    return Row(
+                    Row(
                       mainAxisAlignment: .center,
-                      children: List.generate(
-                        state.tasks.length,
-                        (index) {
-                          final isActive = index == state.tasksPickedIndex;
+                      children: state.tasks.map((e) {
+                        final isActive = state.tasks.indexOf(e) == state.tasksPickedIndex;
 
-                          return GestureDetector(
-                            onTap: () => _selectPage(index),
-                            child: AnimatedContainer(
-                              duration: const Duration(milliseconds: 250),
-                              curve: Curves.easeOutCubic,
-                              margin: EdgeInsets.symmetric(
-                                horizontal: 6.calc,
-                              ),
-                              width: 50.calc,
-                              height: 8.calc,
-                              decoration: BoxDecoration(
-                                color: isActive ? CustomColors.white100 : CustomColors.white10,
-                                borderRadius: BorderRadius.circular(10.calc),
-                              ),
+                        return GestureDetector(
+                          onTap: () => _selectPage(state.tasks.indexOf(e)),
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 250),
+                            curve: Curves.easeOutCubic,
+                            margin: EdgeInsets.symmetric(
+                              horizontal: 6.calc,
                             ),
-                          );
-                        },
-                      ),
-                    );
-                  },
-                ),
+                            width: 50.calc,
+                            height: 8.calc,
+                            decoration: BoxDecoration(
+                              color: isActive ? CustomColors.white100 : CustomColors.white10,
+                              borderRadius: BorderRadius.circular(10.calc),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
 
-                const _Button(),
-              ],
+                    const _Button(),
+                  ],
+                );
+              },
             ),
           ),
         ],
@@ -223,37 +216,39 @@ class _TopContainer extends StatelessWidget {
                   color: CustomColors.dominant,
                   borderRadius: BorderRadius.circular(20.calc),
                 ),
-                child: state.tasks[state.tasksPickedIndex].isComplete
-                    ? CustomSvgPicture(
-                        iconPath: SvgIconsAssets.done,
-                        width: 38.calc,
-                        height: 38.calc,
-                        color: CustomColors.green,
-                      )
-                    : Center(
-                        child: RichText(
-                          text: TextSpan(
-                            style: TextStyle(
-                              fontSize: 26.calc,
-                              fontWeight: .w500,
-                            ),
-                            children: [
-                              TextSpan(
-                                text: '${state.tasksPickedIndex + 1}',
-                                style: const TextStyle(
-                                  color: CustomColors.green,
-                                ),
-                              ),
-                              TextSpan(
-                                text: ' / ${state.tasks.length}',
-                                style: const TextStyle(
-                                  color: CustomColors.gray4,
-                                ),
-                              ),
-                            ],
-                          ),
+                child: Visibility(
+                  visible: state.tasks[state.tasksPickedIndex].isComplete,
+                  replacement: Center(
+                    child: RichText(
+                      text: TextSpan(
+                        style: TextStyle(
+                          fontSize: 26.calc,
+                          fontWeight: .w500,
                         ),
+                        children: [
+                          TextSpan(
+                            text: '${state.tasksPickedIndex + 1}',
+                            style: const TextStyle(
+                              color: CustomColors.green,
+                            ),
+                          ),
+                          TextSpan(
+                            text: ' / ${state.tasks.length}',
+                            style: const TextStyle(
+                              color: CustomColors.gray4,
+                            ),
+                          ),
+                        ],
                       ),
+                    ),
+                  ),
+                  child: CustomSvgPicture(
+                    iconPath: SvgIconsAssets.done,
+                    width: 38.calc,
+                    height: 38.calc,
+                    color: CustomColors.green,
+                  ),
+                ),
               ),
             ],
           ),

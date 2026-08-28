@@ -20,9 +20,9 @@ class BattlePassPageExperienceBar extends StatelessWidget {
         child: Row(
           children: [
             const XpBar(
-              level: 22,
-              currentXp: 500,
-              maxXp: 1600,
+              level: 15,
+              currentXp: 1500,
+              maxXp: 2400,
             ),
             SizedBox(width: 37.calc),
             Column(
