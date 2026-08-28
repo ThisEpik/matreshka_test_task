@@ -8,14 +8,17 @@ class BattlePassCubit extends Cubit<BattlePassState> {
     : super(
         BattlePassState(
           battlePassProgressionState: BattlePassProgressionState.free,
+          tasksPickedIndex: 0,
         ),
       );
 
   void changeBattlePassProgression(BattlePassProgressionState newState) {
     emit(
-      BattlePassState(
-        battlePassProgressionState: newState,
-      ),
+      state.copyWith(battlePassProgressionState: newState),
     );
+  }
+
+  void changeTasksIndex(int index) {
+    emit(state.copyWith(tasksPickedIndex: index));
   }
 }
