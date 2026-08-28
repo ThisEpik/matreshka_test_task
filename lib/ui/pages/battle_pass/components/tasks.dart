@@ -8,6 +8,7 @@ import 'package:matreshka_test_task/ui/kit/colors.dart';
 import 'package:matreshka_test_task/ui/kit/images.dart';
 import 'package:matreshka_test_task/ui/kit/svg_icons.dart';
 import 'package:matreshka_test_task/ui/pages/battle_pass/cubit/battle_pass_cubit.dart';
+import 'package:matreshka_test_task/ui/pages/tasks/page.dart';
 
 class BattlePassPageTasks extends StatefulWidget {
   const BattlePassPageTasks({super.key});
@@ -17,25 +18,17 @@ class BattlePassPageTasks extends StatefulWidget {
 }
 
 class _BattlePassPageTasksState extends State<BattlePassPageTasks> {
-  late final PageController _pageController;
-
-  final List<String> _tasks = const [
-    'Используйте определенный предмет (Энергетик) 10 раз.',
-    'Используйте определенный предмет (Бургер) 10 раз.',
-    'Используйте определенный предмет (Краска) 10 раз.',
-    'Используйте определенный предмет (Лопата) 10 раз.',
-    'Используйте определенный предмет (Кола) 10 раз.',
-  ];
+  late final PageController pageController;
 
   @override
   void initState() {
     super.initState();
-    _pageController = PageController();
+    pageController = PageController();
   }
 
   @override
   void dispose() {
-    _pageController.dispose();
+    pageController.dispose();
     super.dispose();
   }
 
@@ -44,7 +37,7 @@ class _BattlePassPageTasksState extends State<BattlePassPageTasks> {
   }
 
   void _selectPage(int index) {
-    _pageController.animateToPage(
+    pageController.animateToPage(
       index,
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeOutCubic,
@@ -73,27 +66,31 @@ class _BattlePassPageTasksState extends State<BattlePassPageTasks> {
             child: Column(
               mainAxisAlignment: .spaceEvenly,
               children: [
-                SizedBox(
-                  width: 340.calc,
-                  height: 70.calc,
-                  child: PageView.builder(
-                    controller: _pageController,
-                    itemCount: _tasks.length,
-                    onPageChanged: _onPageChanged,
-                    itemBuilder: (context, index) {
-                      return Center(
-                        child: Text(
-                          _tasks[index],
-                          textAlign: .center,
-                          style: TextStyle(
-                            color: CustomColors.white60,
-                            fontWeight: .w500,
-                            fontSize: 22.calc,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
+                BlocBuilder<BattlePassCubit, BattlePassState>(
+                  builder: (context, state) {
+                    return SizedBox(
+                      width: 340.calc,
+                      height: 70.calc,
+                      child: PageView.builder(
+                        controller: pageController,
+                        itemCount: state.tasks.length,
+                        onPageChanged: _onPageChanged,
+                        itemBuilder: (context, index) {
+                          return Center(
+                            child: Text(
+                              state.tasks[index].description,
+                              textAlign: .center,
+                              style: TextStyle(
+                                color: CustomColors.white60,
+                                fontWeight: .w500,
+                                fontSize: 22.calc,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  },
                 ),
 
                 BlocBuilder<BattlePassCubit, BattlePassState>(
@@ -101,7 +98,7 @@ class _BattlePassPageTasksState extends State<BattlePassPageTasks> {
                     return Row(
                       mainAxisAlignment: .center,
                       children: List.generate(
-                        _tasks.length,
+                        state.tasks.length,
                         (index) {
                           final isActive = index == state.tasksPickedIndex;
 
@@ -143,7 +140,14 @@ class _Button extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTapDown: (_) {},
+      onTapDown: (_) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const TasksPage(),
+          ),
+        );
+      },
       child: Container(
         width: 320.calc,
         height: 74.calc,
@@ -183,67 +187,78 @@ class _TopContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: .symmetric(horizontal: 30.calc),
-      width: 400.calc,
-      height: 110.calc,
-      decoration: BoxDecoration(
-        color: CustomColors.gray2.withValues(alpha: 0.6),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(AppDimensions.radius30),
-          topRight: Radius.circular(AppDimensions.radius30),
-        ),
-      ),
-      child: Row(
-        children: [
-          const CustomImageAsset(
-            assetPath: ImagesAssets.xp,
-          ),
-          SizedBox(width: 12.calc),
-          Text(
-            'x 25',
-            style: TextStyle(
-              color: CustomColors.white100,
-              fontSize: 26.calc,
-              height: 1.2,
-              letterSpacing: -0.22,
+    return BlocBuilder<BattlePassCubit, BattlePassState>(
+      builder: (context, state) {
+        return Container(
+          padding: .symmetric(horizontal: 30.calc),
+          width: 400.calc,
+          height: 110.calc,
+          decoration: BoxDecoration(
+            color: CustomColors.gray2.withValues(alpha: 0.6),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(AppDimensions.radius30),
+              topRight: Radius.circular(AppDimensions.radius30),
             ),
           ),
-          const Spacer(),
-          Container(
-            width: 112.calc,
-            height: 56.calc,
-            decoration: BoxDecoration(
-              color: CustomColors.dominant,
-              borderRadius: BorderRadius.circular(20.calc),
-            ),
-            child: Center(
-              child: RichText(
-                text: TextSpan(
-                  style: TextStyle(
-                    fontSize: 26.calc,
-                    fontWeight: .w500,
-                  ),
-                  children: const [
-                    TextSpan(
-                      text: '3',
-                      style: TextStyle(
-                        color: CustomColors.green,
-                      ),
-                    ),
-                    TextSpan(
-                      text: ' / 5',
-                      style: TextStyle(
-                        color: CustomColors.gray4,
-                      ),
-                    ),
-                  ],
+          child: Row(
+            children: [
+              const CustomImageAsset(
+                assetPath: ImagesAssets.xp,
+              ),
+              SizedBox(width: 12.calc),
+              Text(
+                'x ${state.tasks[state.tasksPickedIndex].exp}',
+                style: TextStyle(
+                  color: CustomColors.white100,
+                  fontSize: 26.calc,
+                  height: 1.2,
+                  letterSpacing: -0.22,
                 ),
               ),
-            ),
+              const Spacer(),
+              Container(
+                width: 112.calc,
+                height: 56.calc,
+                decoration: BoxDecoration(
+                  color: CustomColors.dominant,
+                  borderRadius: BorderRadius.circular(20.calc),
+                ),
+                child: state.tasks[state.tasksPickedIndex].isComplete
+                    ? CustomSvgPicture(
+                        iconPath: SvgIconsAssets.done,
+                        width: 38.calc,
+                        height: 38.calc,
+                        color: CustomColors.green,
+                      )
+                    : Center(
+                        child: RichText(
+                          text: TextSpan(
+                            style: TextStyle(
+                              fontSize: 26.calc,
+                              fontWeight: .w500,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: '${state.tasksPickedIndex + 1}',
+                                style: const TextStyle(
+                                  color: CustomColors.green,
+                                ),
+                              ),
+                              TextSpan(
+                                text: ' / ${state.tasks.length}',
+                                style: const TextStyle(
+                                  color: CustomColors.gray4,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
