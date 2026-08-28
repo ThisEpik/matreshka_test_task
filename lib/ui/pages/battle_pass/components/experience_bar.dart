@@ -51,10 +51,7 @@ class BattlePassPageExperienceBar extends StatelessWidget {
                 ShaderMask(
                   shaderCallback: (bounds) {
                     return const LinearGradient(
-                      colors: [
-                        CustomColors.orangeGradien1,
-                        CustomColors.orangeGradien2,
-                      ],
+                      colors: CustomColors.orangeGradient,
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                     ).createShader(bounds);
