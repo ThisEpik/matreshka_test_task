@@ -22,3 +22,33 @@ flutter:
   assets:
     - assets/images/
     - assets/svg_icons/
+
+  fonts:
+    - family: Geologica
+      fonts:
+        - asset: assets/fonts/geologica/Geologica-Thin.ttf
+          weight: 100
+
+        - asset: assets/fonts/geologica/Geologica-ExtraLight.ttf
+          weight: 200
+
+        - asset: assets/fonts/geologica/Geologica-Light.ttf
+          weight: 300
+
+        - asset: assets/fonts/geologica/Geologica-Regular.ttf
+          weight: 400
+
+        - asset: assets/fonts/geologica/Geologica-Medium.ttf
+          weight: 500
+
+        - asset: assets/fonts/geologica/Geologica-SemiBold.ttf
+          weight: 600
+
+        - asset: assets/fonts/geologica/Geologica-Bold.ttf
+          weight: 700
+
+        - asset: assets/fonts/geologica/Geologica-ExtraBold.ttf
+          weight: 800
+
+        - asset: assets/fonts/geologica/Geologica-Black.ttf
+          weight: 900

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:matreshka_test_task/ui/pages/home/page.dart';
+import 'package:matreshka_test_task/ui/themes/dark_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,7 +20,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData.dark(),
+      theme: CustomDarkTheme.theme,
       debugShowCheckedModeBanner: false,
       home: const HomePage(),
     );

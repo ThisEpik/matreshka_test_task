@@ -5,4 +5,5 @@ abstract final class CustomSvgIconsAssets {
   static const halloween = 'assets/svg_icons/halloween.svg';
   static const personPlus = 'assets/svg_icons/person_plus.svg';
   static const ticket = 'assets/svg_icons/ticket.svg';
+  static const timer = 'assets/svg_icons/timer.svg';
 }

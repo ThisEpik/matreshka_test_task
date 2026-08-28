@@ -5,34 +5,6 @@ const _templateWidth = 2320;
 const _templateHeight = 1080;
 
 extension AdaptiveSizesInt on int {
-  // double get calculateWidth {
-  //   final view = PlatformDispatcher.instance.views.first;
-
-  //   final width = view.physicalSize.width / view.devicePixelRatio;
-
-  //   return this / (_templateWidth / width);
-  // }
-
-  // double get calculateHeight {
-  //   final view = PlatformDispatcher.instance.views.first;
-
-  //   final height = view.physicalSize.height / view.devicePixelRatio;
-
-  //   return this / (_templateHeight / height);
-  // }
-
-  // double get calculateFontSize {
-  //   final view = PlatformDispatcher.instance.views.first;
-
-  //   final width = view.physicalSize.width / view.devicePixelRatio;
-  //   final height = view.physicalSize.height / view.devicePixelRatio;
-
-  //   final widthScale = width / _templateWidth;
-  //   final heightScale = height / _templateHeight;
-
-  //   return this * math.min(widthScale, heightScale);
-  // }
-
   double get calc {
     final view = PlatformDispatcher.instance.views.first;
 
@@ -46,20 +18,16 @@ extension AdaptiveSizesInt on int {
   }
 }
 
-// extension AdaptiveSizesDouble on double {
-//   double get calculateWidth {
-//     final view = PlatformDispatcher.instance.views.first;
+extension AdaptiveSizesDouble on double {
+  double get calc {
+    final view = PlatformDispatcher.instance.views.first;
 
-//     final width = view.physicalSize.width / view.devicePixelRatio;
+    final width = view.physicalSize.width / view.devicePixelRatio;
+    final height = view.physicalSize.height / view.devicePixelRatio;
 
-//     return this / (_templateWidth / width);
-//   }
+    final widthScale = width / _templateWidth;
+    final heightScale = height / _templateHeight;
 
-//   double get calculateHeight {
-//     final view = PlatformDispatcher.instance.views.first;
-
-//     final height = view.physicalSize.height / view.devicePixelRatio;
-
-//     return this / (_templateHeight / height);
-//   }
-// }
+    return this * math.min(widthScale, heightScale);
+  }
+}

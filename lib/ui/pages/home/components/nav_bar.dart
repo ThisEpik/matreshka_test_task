@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:matreshka_test_task/ui/helpers/adaptive_sizes.dart';
+import 'package:matreshka_test_task/ui/kit/app_dimensions.dart';
 import 'package:matreshka_test_task/ui/kit/colors.dart';
 import 'package:matreshka_test_task/ui/kit/images.dart';
 import 'package:matreshka_test_task/ui/kit/svg_icons.dart';
@@ -26,7 +26,7 @@ class HomePageNavBar extends StatelessWidget {
         child: SafeArea(
           right: false,
           child: SizedBox(
-            width: 160.calc,
+            width: AppDimensions.navBarWidth,
             child: BlocConsumer<HomeCubit, HomeState>(
               listener: (context, state) {},
               builder: (context, state) {
