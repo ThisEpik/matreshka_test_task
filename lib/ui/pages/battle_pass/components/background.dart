@@ -9,7 +9,7 @@ class BattlePassPageBackground extends StatelessWidget {
     final size = MediaQuery.sizeOf(context);
 
     return Image.asset(
-      CustomImagesAssets.battlePassBackground,
+      ImagesAssets.battlePassBackground,
       fit: BoxFit.cover,
       width: size.width,
       height: size.height,

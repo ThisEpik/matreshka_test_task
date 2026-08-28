@@ -25,7 +25,7 @@ class CustomCloseButton extends StatelessWidget {
         ),
         child: Center(
           child: CustomSvgPicture(
-            iconPath: CustomSvgIconsAssets.close,
+            iconPath: SvgIconsAssets.close,
             width: 36.calc,
             height: 36.calc,
             color: CustomColors.white100,

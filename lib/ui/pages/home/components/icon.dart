@@ -24,7 +24,7 @@ class HomePageIcon extends StatelessWidget {
     final iconSize = 72.calc;
     final buttonSize = 120.calc;
 
-    return InkWell(
+    return GestureDetector(
       onTap: onTap,
       child: SizedBox(
         width: buttonSize,

@@ -19,7 +19,7 @@ class HomePageNavBar extends StatelessWidget {
         decoration: const BoxDecoration(
           color: CustomColors.purple,
           image: DecorationImage(
-            image: AssetImage(CustomImagesAssets.sideBar),
+            image: AssetImage(ImagesAssets.sideBar),
             fit: BoxFit.fill,
           ),
         ),
@@ -60,32 +60,32 @@ class HomePageNavBar extends StatelessWidget {
 
 final _elements = [
   NavBarElement(
-    iconPath: CustomSvgIconsAssets.halloween,
+    iconPath: SvgIconsAssets.halloween,
     title: 'Ивент',
     isUnread: false,
   ),
   NavBarElement(
-    iconPath: CustomSvgIconsAssets.coctail,
+    iconPath: SvgIconsAssets.coctail,
     title: 'Battle pass',
     isUnread: false,
   ),
   NavBarElement(
-    iconPath: CustomSvgIconsAssets.calendar1,
+    iconPath: SvgIconsAssets.calendar1,
     title: 'Календарь новичка',
     isUnread: true,
   ),
   NavBarElement(
-    iconPath: CustomSvgIconsAssets.calendar2,
+    iconPath: SvgIconsAssets.calendar2,
     title: 'После уроков',
     isUnread: false,
   ),
   NavBarElement(
-    iconPath: CustomSvgIconsAssets.personPlus,
+    iconPath: SvgIconsAssets.personPlus,
     title: 'Пригласи друга',
     isUnread: false,
   ),
   NavBarElement(
-    iconPath: CustomSvgIconsAssets.ticket,
+    iconPath: SvgIconsAssets.ticket,
     title: 'Промокод',
     isUnread: false,
   ),

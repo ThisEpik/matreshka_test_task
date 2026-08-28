@@ -32,7 +32,7 @@ class BattlePassPageExperienceBar extends StatelessWidget {
                 Row(
                   children: [
                     CustomSvgPicture(
-                      iconPath: CustomSvgIconsAssets.timer,
+                      iconPath: SvgIconsAssets.timer,
                       width: 32.calc,
                       height: 32.calc,
                     ),
