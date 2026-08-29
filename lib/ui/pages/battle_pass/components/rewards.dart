@@ -75,10 +75,10 @@ class _BattlePassPageRewardsState extends State<BattlePassPageRewards> {
                       1.0,
                     ],
                     colors: const [
-                      Colors.transparent,
-                      Colors.white,
-                      Colors.white,
-                      Colors.transparent,
+                      CustomColors.transparent,
+                      CustomColors.white100,
+                      CustomColors.white100,
+                      CustomColors.transparent,
                     ],
                   ).createShader(bounds);
                 },
