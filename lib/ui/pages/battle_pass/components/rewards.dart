@@ -11,8 +11,28 @@ import 'package:matreshka_test_task/ui/kit/colors.dart';
 import 'package:matreshka_test_task/ui/kit/svg_icons.dart';
 import 'package:matreshka_test_task/ui/pages/battle_pass/cubit/battle_pass_cubit.dart';
 
-class BattlePassPageRewards extends StatelessWidget {
+class BattlePassPageRewards extends StatefulWidget {
   const BattlePassPageRewards({super.key});
+
+  @override
+  State<BattlePassPageRewards> createState() => _BattlePassPageRewardsState();
+}
+
+class _BattlePassPageRewardsState extends State<BattlePassPageRewards> {
+  final scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll(ScrollMetrics metrics) {
+    context.read<BattlePassCubit>().updateRewardsScrollState(
+      isAtStart: metrics.pixels <= metrics.minScrollExtent + 1,
+      isAtEnd: metrics.pixels >= metrics.maxScrollExtent - 1,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,25 +42,66 @@ class BattlePassPageRewards extends StatelessWidget {
       child: SizedBox(
         height: 330.calc,
         width: MediaQuery.of(context).size.width,
-        child: BlocBuilder<BattlePassCubit, BattlePassState>(
-          builder: (context, state) {
-            return ListView.builder(
-              itemCount: state.rewards.length,
-              padding: EdgeInsets.only(
-                left: AppDimensions.navBarWidth + MediaQuery.viewPaddingOf(context).left + AppDimensions.padding51,
-                right: AppDimensions.padding51,
-              ),
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                final reward = state.rewards[index];
-
-                return _RewardItem(
-                  reward: reward,
-                  level: index + 1,
-                );
-              },
-            );
+        child: NotificationListener<ScrollNotification>(
+          onNotification: (notification) {
+            _onScroll(notification.metrics);
+            return false;
           },
+          child: BlocBuilder<BattlePassCubit, BattlePassState>(
+            buildWhen: (previous, current) =>
+                previous.rewards != current.rewards ||
+                previous.isRewardsAtStart != current.isRewardsAtStart ||
+                previous.isRewardsAtEnd != current.isRewardsAtEnd,
+            builder: (context, state) {
+              return ShaderMask(
+                blendMode: BlendMode.dstIn,
+                shaderCallback: (bounds) {
+                  final fadeWidth = 400.calc;
+
+                  final leftFade = state.isRewardsAtStart ? 0.0 : fadeWidth * 1.5;
+
+                  final rightFade = state.isRewardsAtEnd ? 0.0 : fadeWidth;
+
+                  final leftStop = leftFade / bounds.width;
+                  final rightStop = 1.0 - rightFade / bounds.width;
+
+                  return LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    stops: [
+                      0.0,
+                      leftStop,
+                      rightStop,
+                      1.0,
+                    ],
+                    colors: const [
+                      Colors.transparent,
+                      Colors.white,
+                      Colors.white,
+                      Colors.transparent,
+                    ],
+                  ).createShader(bounds);
+                },
+                child: ListView.builder(
+                  controller: scrollController,
+                  itemCount: state.rewards.length,
+                  padding: EdgeInsets.only(
+                    left: AppDimensions.navBarWidth + MediaQuery.viewPaddingOf(context).left + AppDimensions.padding51,
+                    right: AppDimensions.padding51,
+                  ),
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    final reward = state.rewards[index];
+
+                    return _RewardItem(
+                      reward: reward,
+                      level: index + 1,
+                    );
+                  },
+                ),
+              );
+            },
+          ),
         ),
       ),
     );

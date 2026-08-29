@@ -19,6 +19,8 @@ class BattlePassCubit extends Cubit<BattlePassState> {
           rewards: [],
           pickedReward: null,
           battlePassExperience: null,
+          isRewardsAtStart: true,
+          isRewardsAtEnd: false,
         ),
       );
 
@@ -48,5 +50,21 @@ class BattlePassCubit extends Cubit<BattlePassState> {
 
   void pickReward(IBattlePassReward newReward) {
     emit(state.copyWith(pickedReward: newReward));
+  }
+
+  void updateRewardsScrollState({
+    required bool isAtStart,
+    required bool isAtEnd,
+  }) {
+    if (state.isRewardsAtStart == isAtStart && state.isRewardsAtEnd == isAtEnd) {
+      return;
+    }
+
+    emit(
+      state.copyWith(
+        isRewardsAtStart: isAtStart,
+        isRewardsAtEnd: isAtEnd,
+      ),
+    );
   }
 }
