@@ -12,7 +12,7 @@ class BattlePassPageExperienceBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      left: AppDimensions.navBarWidth + MediaQuery.viewPaddingOf(context).left + 51.calc,
+      left: AppDimensions.navBarWidth + MediaQuery.viewPaddingOf(context).left + AppDimensions.padding51,
       top: 37.calc,
       child: SizedBox(
         width: 606.calc,

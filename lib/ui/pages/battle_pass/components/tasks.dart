@@ -47,7 +47,7 @@ class _BattlePassPageTasksState extends State<BattlePassPageTasks> {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      left: AppDimensions.navBarWidth + MediaQuery.viewPaddingOf(context).left + 51.calc,
+      left: AppDimensions.navBarWidth + MediaQuery.viewPaddingOf(context).left + AppDimensions.padding51,
       top: 220.calc,
       child: Column(
         children: [
