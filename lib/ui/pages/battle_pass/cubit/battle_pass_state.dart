@@ -6,12 +6,14 @@ final class BattlePassState {
   final List<IBattlePassTask> tasks;
   final List<IBattlePassReward> rewards;
   final IBattlePassReward? pickedReward;
+  final IBattlePassExperience? battlePassExperience;
 
   BattlePassState({
     required this.battlePassProgressionState,
     required this.tasksPickedIndex,
     required this.tasks,
     required this.rewards,
+    required this.battlePassExperience,
     required this.pickedReward,
   });
 
@@ -21,6 +23,7 @@ final class BattlePassState {
     List<IBattlePassTask>? tasks,
     List<IBattlePassReward>? rewards,
     IBattlePassReward? pickedReward,
+    IBattlePassExperience? battlePassExperience,
   }) {
     return BattlePassState(
       battlePassProgressionState: battlePassProgressionState ?? this.battlePassProgressionState,
@@ -28,6 +31,7 @@ final class BattlePassState {
       tasks: tasks ?? this.tasks,
       rewards: rewards ?? this.rewards,
       pickedReward: pickedReward ?? this.pickedReward,
+      battlePassExperience: battlePassExperience ?? this.battlePassExperience,
     );
   }
 }

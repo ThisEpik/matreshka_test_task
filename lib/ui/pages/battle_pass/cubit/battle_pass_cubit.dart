@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:matreshka_test_task/domain/models/battle_pass_experience.dart';
 import 'package:matreshka_test_task/domain/models/battle_pass_reward.dart';
 import 'package:matreshka_test_task/domain/models/battle_pass_task.dart';
 import 'package:matreshka_test_task/domain/repos/battle_pass_repo.dart';
@@ -17,16 +18,20 @@ class BattlePassCubit extends Cubit<BattlePassState> {
           tasks: [],
           rewards: [],
           pickedReward: null,
+          battlePassExperience: null,
         ),
       );
 
   void init() {
     final tasks = repo.getTasks();
     final rewards = repo.getRewards();
+    final battlePassExperience = repo.getBattlePassExperience();
+
     emit(
       state.copyWith(
         tasks: tasks,
         rewards: rewards,
+        battlePassExperience: battlePassExperience,
       ),
     );
   }
