@@ -1,19 +1,21 @@
-import 'dart:math' as math;
 import 'dart:ui';
 
-const _templateWidth = 2320;
-const _templateHeight = 1080;
+const _designWidth = 2320.0;
+const _designHeight = 1080.0;
+const _designAspectRatio = _designWidth / _designHeight;
 
-extension AdaptiveSizesInt on num {
+extension AdaptiveSizes on num {
   double get calc {
     final view = PlatformDispatcher.instance.views.first;
 
     final width = view.physicalSize.width / view.devicePixelRatio;
+
     final height = view.physicalSize.height / view.devicePixelRatio;
 
-    final widthScale = width / _templateWidth;
-    final heightScale = height / _templateHeight;
+    final aspectRatio = width / height;
 
-    return this * math.min(widthScale, heightScale);
+    final scale = aspectRatio >= _designAspectRatio ? height / _designHeight : width / _designWidth;
+
+    return toDouble() * scale;
   }
 }
