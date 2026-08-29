@@ -14,38 +14,22 @@ final class MockBattlePassRepo implements IBattlePassRepository {
   List<IBattlePassTask> getTasks() {
     final random = Random();
 
-    return [
-      BattlePassTaskDTO(
-        id: random.nextInt(10000 - 1) + 1,
-        exp: random.nextInt(300 - 5) + 5,
-        description: 'Используйте определенный предмет (Энергетик) 10 раз.',
-        isComplete: true,
-      ),
-      BattlePassTaskDTO(
-        id: random.nextInt(10000 - 1) + 1,
-        exp: random.nextInt(300) + 5,
-        description: 'Используйте определенный предмет (Бургер) 10 раз.',
-        isComplete: false,
-      ),
-      BattlePassTaskDTO(
-        id: random.nextInt(10000 - 1) + 1,
-        exp: random.nextInt(300) + 5,
-        description: 'Используйте определенный предмет (Краска) 10 раз.',
-        isComplete: true,
-      ),
-      BattlePassTaskDTO(
-        id: random.nextInt(10000 - 1) + 1,
-        exp: random.nextInt(300) + 5,
-        description: 'Используйте определенный предмет (Лопата) 10 раз.',
-        isComplete: false,
-      ),
-      BattlePassTaskDTO(
-        id: random.nextInt(10000 - 1) + 1,
-        exp: random.nextInt(300) + 5,
-        description: 'Используйте определенный предмет (Кола) 10 раз.',
-        isComplete: true,
-      ),
+    const tasks = [
+      ('Энергетик', true),
+      ('Бургер', false),
+      ('Краска', true),
+      ('Лопата', false),
+      ('Кола', true),
     ];
+
+    return tasks.map((task) {
+      return BattlePassTaskDTO(
+        id: random.nextInt(9999) + 1,
+        exp: random.nextInt(296) + 5,
+        description: 'Используйте определенный предмет (${task.$1}) 10 раз.',
+        isComplete: task.$2,
+      );
+    }).toList();
   }
 
   @override
