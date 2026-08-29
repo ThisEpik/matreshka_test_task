@@ -1,9 +1,11 @@
 import 'dart:math' show Random;
 
+import 'package:matreshka_test_task/data/models/battle_pass_experience.dart';
 import 'package:matreshka_test_task/data/models/battle_pass_reward.dart';
 import 'package:matreshka_test_task/data/models/battle_pass_task.dart';
 import 'package:matreshka_test_task/domain/enums/battle_pass_reward_rarity.dart';
 import 'package:matreshka_test_task/domain/enums/battle_pass_reward_status.dart';
+import 'package:matreshka_test_task/domain/models/battle_pass_experience.dart';
 import 'package:matreshka_test_task/domain/models/battle_pass_reward.dart';
 import 'package:matreshka_test_task/domain/models/battle_pass_task.dart';
 import 'package:matreshka_test_task/domain/repos/battle_pass_repo.dart';
@@ -57,5 +59,14 @@ final class MockBattlePassRepo implements IBattlePassRepository {
         isClaimed: isReached && random.nextBool(),
       );
     });
+  }
+
+  @override
+  IBattlePassExperience getBattlePassExperience() {
+    return BattlePassExperienceDTO(
+      level: 20,
+      currentXP: 1000,
+      nextLevelXP: 2300,
+    );
   }
 }
