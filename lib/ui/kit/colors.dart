@@ -16,11 +16,13 @@ abstract final class CustomColors {
   static const gray3 = Color.fromRGBO(33, 35, 49, 1);
   static const gray4 = Color.fromRGBO(114, 115, 122, 1);
   static const dominant = Color.fromRGBO(35, 36, 41, 1);
-  static const red = Color.fromRGBO(215, 39, 0, 1);
+  static const red1 = Color.fromRGBO(215, 39, 0, 1);
+  static const red2 = Color.fromRGBO(239, 64, 41, 1);
   static const backgroundColor = Color(0xFF2d2e34);
   static const green = Color.fromRGBO(86, 184, 119, 1);
   static const yellow = Color.fromRGBO(255, 209, 73, 1);
   static const dark60 = Color.fromRGBO(24, 25, 31, 0.6);
+
   static const orangeGradient = [
     Color.fromRGBO(214, 58, 38, 1),
     Color.fromRGBO(239, 100, 41, 1),

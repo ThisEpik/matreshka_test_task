@@ -9,6 +9,7 @@ base class IBattlePassReward {
   final BattlePassRewardRarity rarity;
   final BattlePassRewardStatus status;
   final bool isPremium;
+  final bool isClaimed;
 
   IBattlePassReward({
     required this.id,
@@ -18,5 +19,6 @@ base class IBattlePassReward {
     required this.rarity,
     required this.status,
     required this.isPremium,
+    required this.isClaimed,
   });
 }

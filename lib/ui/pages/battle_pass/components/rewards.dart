@@ -20,20 +20,24 @@ class BattlePassPageRewards extends StatelessWidget {
       bottom: 0,
       right: 0,
       child: SizedBox(
-        height: 360.calc,
+        height: 330.calc,
         width: MediaQuery.of(context).size.width,
         child: BlocBuilder<BattlePassCubit, BattlePassState>(
           builder: (context, state) {
             return ListView.builder(
               itemCount: state.rewards.length,
-              padding: .only(
+              padding: EdgeInsets.only(
                 left: AppDimensions.navBarWidth + MediaQuery.viewPaddingOf(context).left + AppDimensions.padding51,
                 right: AppDimensions.padding51,
               ),
-              scrollDirection: .horizontal,
+              scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
                 final reward = state.rewards[index];
-                return _Reward(reward: reward);
+
+                return _RewardItem(
+                  reward: reward,
+                  level: index + 1,
+                );
               },
             );
           },
@@ -43,10 +47,118 @@ class BattlePassPageRewards extends StatelessWidget {
   }
 }
 
+class _RewardItem extends StatelessWidget {
+  final IBattlePassReward reward;
+  final int level;
+
+  const _RewardItem({
+    required this.reward,
+    required this.level,
+  });
+
+  double get cardWidth {
+    return reward.status == BattlePassRewardStatus.reached ? 260.calc : 222.calc;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: cardWidth,
+      child: Stack(
+        children: [
+          _Reward(reward: reward),
+
+          _ProgressLine(
+            isActive: reward.status == BattlePassRewardStatus.reached,
+          ),
+
+          Positioned(
+            left: (cardWidth / 1.2).calc,
+            bottom: 25.calc,
+            child: _ProgressPoint(
+              level: level,
+              isActive: reward.status == BattlePassRewardStatus.reached,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ProgressLine extends StatelessWidget {
+  final bool isActive;
+
+  const _ProgressLine({
+    required this.isActive,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      left: 0,
+      right: 0,
+      bottom: 50.calc,
+      child: Row(
+        children: [
+          Expanded(
+            child: Container(
+              height: 10.calc,
+              decoration: BoxDecoration(
+                color: isActive ? CustomColors.red2 : CustomColors.dominant,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ProgressPoint extends StatelessWidget {
+  final int level;
+  final bool isActive;
+
+  const _ProgressPoint({
+    required this.level,
+    required this.isActive,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Transform.rotate(
+      angle: 0.785398,
+      child: Container(
+        width: 60.calc,
+        height: 60.calc,
+        decoration: BoxDecoration(
+          color: isActive ? CustomColors.red2 : CustomColors.dominant,
+          borderRadius: BorderRadius.circular(10.calc),
+        ),
+        child: Transform.rotate(
+          angle: -0.785398,
+          child: Center(
+            child: Text(
+              '$level',
+              style: TextStyle(
+                fontSize: 22.calc,
+                fontWeight: FontWeight.w500,
+                color: CustomColors.white100,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _Reward extends StatelessWidget {
   final IBattlePassReward reward;
 
-  const _Reward({required this.reward});
+  const _Reward({
+    required this.reward,
+  });
 
   List<Color> get gradientColors {
     switch (reward.rarity) {
@@ -66,11 +178,11 @@ class _Reward extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTapDown: (_) {
-        context.read<BattlePassCubit>().pickReward(reward);
-      },
-      child: Center(
+    return Center(
+      child: GestureDetector(
+        onTapDown: (_) {
+          context.read<BattlePassCubit>().pickReward(reward);
+        },
         child: Transform(
           alignment: Alignment.center,
           transform: Matrix4.identity()
@@ -80,13 +192,18 @@ class _Reward extends StatelessWidget {
           child: Stack(
             children: [
               Opacity(
-                opacity: reward.status == BattlePassRewardStatus.claimed ? .3 : 1,
+                opacity: reward.isClaimed ? .3 : 1,
                 child: Container(
                   width: reward.status == BattlePassRewardStatus.reached ? 240.calc : 202.calc,
                   height: reward.status == BattlePassRewardStatus.reached ? 218.calc : 183.calc,
-                  margin: .only(right: 20.calc),
+                  margin: EdgeInsets.only(
+                    right: 20.calc,
+                    bottom: 110.calc,
+                  ),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(AppDimensions.radius30),
+                    borderRadius: BorderRadius.circular(
+                      AppDimensions.radius30,
+                    ),
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
@@ -108,6 +225,7 @@ class _Reward extends StatelessWidget {
                           height: 152.calc,
                         ),
                       ),
+
                       Positioned(
                         top: 10.calc,
                         left: 10.calc,
@@ -117,7 +235,9 @@ class _Reward extends StatelessWidget {
                             width: 55.calc,
                             height: 50.calc,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(AppDimensions.radius30.calc),
+                              borderRadius: BorderRadius.circular(
+                                AppDimensions.radius30.calc,
+                              ),
                               color: CustomColors.dark60,
                             ),
                             child: Center(
@@ -133,10 +253,12 @@ class _Reward extends StatelessWidget {
                             width: 55.calc,
                             height: 50.calc,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(AppDimensions.radius30.calc),
+                              borderRadius: BorderRadius.circular(
+                                AppDimensions.radius30.calc,
+                              ),
                               gradient: const LinearGradient(
-                                begin: .topCenter,
-                                end: .bottomCenter,
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
                                 colors: CustomColors.yellowGradient2,
                               ),
                             ),
@@ -151,6 +273,7 @@ class _Reward extends StatelessWidget {
                           ),
                         ),
                       ),
+
                       Positioned(
                         right: 10.calc,
                         bottom: reward.status == BattlePassRewardStatus.reached ? 80.calc : 10.calc,
@@ -173,7 +296,7 @@ class _Reward extends StatelessWidget {
                                 'x${reward.count}',
                                 style: TextStyle(
                                   fontSize: 26.calc,
-                                  fontWeight: .w500,
+                                  fontWeight: FontWeight.w500,
                                   color: CustomColors.white100,
                                 ),
                               ),
@@ -181,10 +304,10 @@ class _Reward extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Visibility(
-                        visible: reward.status == BattlePassRewardStatus.reached,
-                        child: Align(
-                          alignment: .bottomCenter,
+
+                      if (reward.status == BattlePassRewardStatus.reached && !reward.isClaimed)
+                        Align(
+                          alignment: Alignment.bottomCenter,
                           child: GestureDetector(
                             onTapDown: (_) {},
                             child: Transform(
@@ -195,11 +318,11 @@ class _Reward extends StatelessWidget {
                               child: Container(
                                 width: double.infinity,
                                 height: 60.calc,
-                                margin: .all(13.calc),
+                                margin: EdgeInsets.all(13.calc),
                                 decoration: BoxDecoration(
                                   gradient: const LinearGradient(
-                                    begin: .topCenter,
-                                    end: .bottomCenter,
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
                                     colors: CustomColors.greenGradient,
                                   ),
                                   borderRadius: BorderRadius.circular(20.calc),
@@ -209,7 +332,7 @@ class _Reward extends StatelessWidget {
                                     'Забрать',
                                     style: TextStyle(
                                       color: CustomColors.white100,
-                                      fontWeight: .w500,
+                                      fontWeight: FontWeight.w500,
                                       fontSize: 26.calc,
                                       height: AppDimensions.lineHeight,
                                       wordSpacing: AppDimensions.letterSpacing22,
@@ -220,14 +343,13 @@ class _Reward extends StatelessWidget {
                             ),
                           ),
                         ),
-                      ),
                     ],
                   ),
                 ),
               ),
-              Visibility(
-                visible: reward.status == BattlePassRewardStatus.claimed,
-                child: Positioned(
+
+              if (reward.isClaimed)
+                Positioned(
                   top: 15.calc,
                   right: 35.calc,
                   child: CustomSvgPicture(
@@ -237,7 +359,6 @@ class _Reward extends StatelessWidget {
                     color: CustomColors.green,
                   ),
                 ),
-              ),
             ],
           ),
         ),

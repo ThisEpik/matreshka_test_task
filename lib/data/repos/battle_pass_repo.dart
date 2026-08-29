@@ -58,19 +58,19 @@ final class MockBattlePassRepo implements IBattlePassRepository {
     ];
 
     const rarities = BattlePassRewardRarity.values;
-    const statuses = BattlePassRewardStatus.values;
 
     return List.generate(100, (index) {
-      final position = index + 1;
+      final isReached = index < 20;
 
       return BattlePassRewardDTO(
-        id: position,
-        name: 'Награда $position',
+        id: index,
+        name: 'Награда $index',
         image: images[index % images.length],
         count: random.nextInt(20) + 1,
         rarity: rarities[random.nextInt(rarities.length)],
-        status: index < 5 ? BattlePassRewardStatus.reached : statuses[random.nextInt(statuses.length)],
-        isPremium: position % 2 == 0,
+        status: isReached ? BattlePassRewardStatus.reached : BattlePassRewardStatus.unreached,
+        isPremium: index % 2 == 0,
+        isClaimed: isReached && random.nextBool(),
       );
     });
   }

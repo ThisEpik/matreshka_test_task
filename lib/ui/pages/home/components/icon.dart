@@ -50,7 +50,7 @@ class HomePageIcon extends StatelessWidget {
                       width: 8,
                       height: 8,
                       decoration: const BoxDecoration(
-                        color: CustomColors.red,
+                        color: CustomColors.red1,
                         shape: BoxShape.circle,
                       ),
                     ),

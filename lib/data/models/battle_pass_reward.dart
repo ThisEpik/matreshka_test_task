@@ -9,5 +9,6 @@ final class BattlePassRewardDTO extends IBattlePassReward {
     required super.rarity,
     required super.status,
     required super.isPremium,
+    required super.isClaimed,
   });
 }
