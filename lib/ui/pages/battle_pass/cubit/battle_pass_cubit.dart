@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:matreshka_test_task/domain/enums/battle_pass_reward_status.dart';
 import 'package:matreshka_test_task/domain/models/battle_pass_experience.dart';
 import 'package:matreshka_test_task/domain/models/battle_pass_reward.dart';
 import 'package:matreshka_test_task/domain/models/battle_pass_task.dart';
@@ -21,6 +22,7 @@ class BattlePassCubit extends Cubit<BattlePassState> {
           battlePassExperience: null,
           isRewardsAtStart: true,
           isRewardsAtEnd: false,
+          pinnedRewardIndex: null,
         ),
       );
 
@@ -34,6 +36,7 @@ class BattlePassCubit extends Cubit<BattlePassState> {
         tasks: tasks,
         rewards: rewards,
         battlePassExperience: battlePassExperience,
+        pinnedRewardIndex: _firstUnreachedMilestone(rewards),
       ),
     );
   }
@@ -55,8 +58,11 @@ class BattlePassCubit extends Cubit<BattlePassState> {
   void updateRewardsScrollState({
     required bool isAtStart,
     required bool isAtEnd,
+    required int? pinnedRewardIndex,
   }) {
-    if (state.isRewardsAtStart == isAtStart && state.isRewardsAtEnd == isAtEnd) {
+    if (state.isRewardsAtStart == isAtStart &&
+        state.isRewardsAtEnd == isAtEnd &&
+        state.pinnedRewardIndex == pinnedRewardIndex) {
       return;
     }
 
@@ -64,7 +70,20 @@ class BattlePassCubit extends Cubit<BattlePassState> {
       state.copyWith(
         isRewardsAtStart: isAtStart,
         isRewardsAtEnd: isAtEnd,
+        pinnedRewardIndex: pinnedRewardIndex,
       ),
     );
+  }
+
+  int? _firstUnreachedMilestone(List<IBattlePassReward> rewards) {
+    for (var index = 0; index < rewards.length; index++) {
+      final isMilestone = (index + 1) % 10 == 0;
+
+      if (isMilestone && rewards[index].status == BattlePassRewardStatus.unreached) {
+        return index;
+      }
+    }
+
+    return null;
   }
 }

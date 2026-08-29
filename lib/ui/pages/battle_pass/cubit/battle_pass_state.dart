@@ -1,6 +1,8 @@
 part of 'battle_pass_cubit.dart';
 
 final class BattlePassState {
+  static const _notSet = Object();
+
   final BattlePassProgressionState battlePassProgressionState;
   final int tasksPickedIndex;
   final List<IBattlePassTask> tasks;
@@ -9,6 +11,7 @@ final class BattlePassState {
   final IBattlePassExperience? battlePassExperience;
   final bool isRewardsAtStart;
   final bool isRewardsAtEnd;
+  final int? pinnedRewardIndex;
 
   BattlePassState({
     required this.battlePassProgressionState,
@@ -19,6 +22,7 @@ final class BattlePassState {
     required this.pickedReward,
     required this.isRewardsAtStart,
     required this.isRewardsAtEnd,
+    required this.pinnedRewardIndex,
   });
 
   BattlePassState copyWith({
@@ -30,6 +34,7 @@ final class BattlePassState {
     IBattlePassExperience? battlePassExperience,
     bool? isRewardsAtStart,
     bool? isRewardsAtEnd,
+    Object? pinnedRewardIndex = _notSet,
   }) {
     return BattlePassState(
       battlePassProgressionState: battlePassProgressionState ?? this.battlePassProgressionState,
@@ -40,6 +45,7 @@ final class BattlePassState {
       battlePassExperience: battlePassExperience ?? this.battlePassExperience,
       isRewardsAtStart: isRewardsAtStart ?? this.isRewardsAtStart,
       isRewardsAtEnd: isRewardsAtEnd ?? this.isRewardsAtEnd,
+      pinnedRewardIndex: identical(pinnedRewardIndex, _notSet) ? this.pinnedRewardIndex : pinnedRewardIndex as int?,
     );
   }
 }

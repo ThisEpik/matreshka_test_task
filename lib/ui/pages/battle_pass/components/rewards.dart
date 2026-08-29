@@ -21,6 +21,8 @@ class BattlePassPageRewards extends StatefulWidget {
 class _BattlePassPageRewardsState extends State<BattlePassPageRewards> {
   final scrollController = ScrollController();
 
+  double get _pinnedRewardAreaWidth => 260.calc;
+
   @override
   void dispose() {
     scrollController.dispose();
@@ -28,10 +30,56 @@ class _BattlePassPageRewardsState extends State<BattlePassPageRewards> {
   }
 
   void _onScroll(ScrollMetrics metrics) {
-    context.read<BattlePassCubit>().updateRewardsScrollState(
+    final cubit = context.read<BattlePassCubit>();
+    final rewards = cubit.state.rewards;
+    final isAtEnd = metrics.extentAfter <= 1;
+
+    cubit.updateRewardsScrollState(
       isAtStart: metrics.pixels <= metrics.minScrollExtent + 1,
-      isAtEnd: metrics.pixels >= metrics.maxScrollExtent - 1,
+      isAtEnd: isAtEnd,
+      pinnedRewardIndex: isAtEnd ? _lastPinnedRewardIndex(rewards) : _pinnedRewardIndex(rewards, metrics),
     );
+  }
+
+  int? _lastPinnedRewardIndex(List<IBattlePassReward> rewards) {
+    if (rewards.isEmpty) {
+      return null;
+    }
+
+    final lastIndex = rewards.length - 1;
+
+    return _isPinnedMilestone(rewards[lastIndex], lastIndex) ? lastIndex : null;
+  }
+
+  int? _pinnedRewardIndex(List<IBattlePassReward> rewards, ScrollMetrics metrics) {
+    if (rewards.isEmpty) {
+      return null;
+    }
+
+    var itemStart = AppDimensions.navBarWidth + MediaQuery.viewPaddingOf(context).left + AppDimensions.padding51;
+    final viewportEnd = metrics.pixels + metrics.viewportDimension;
+
+    for (var index = 0; index < rewards.length; index++) {
+      final itemEnd = itemStart + _rewardItemWidth(rewards[index]);
+
+      if (_isPinnedMilestone(rewards[index], index) && itemStart >= viewportEnd) {
+        return index;
+      }
+
+      itemStart = itemEnd;
+    }
+
+    return null;
+  }
+
+  bool _isMilestone(int index) => (index + 1) % 10 == 0;
+
+  bool _isPinnedMilestone(IBattlePassReward reward, int index) {
+    return _isMilestone(index) && reward.status == BattlePassRewardStatus.unreached;
+  }
+
+  double _rewardItemWidth(IBattlePassReward reward) {
+    return reward.status == BattlePassRewardStatus.reached ? 260.calc : 222.calc;
   }
 
   @override
@@ -51,54 +99,78 @@ class _BattlePassPageRewardsState extends State<BattlePassPageRewards> {
             buildWhen: (previous, current) =>
                 previous.rewards != current.rewards ||
                 previous.isRewardsAtStart != current.isRewardsAtStart ||
-                previous.isRewardsAtEnd != current.isRewardsAtEnd,
+                previous.isRewardsAtEnd != current.isRewardsAtEnd ||
+                previous.pinnedRewardIndex != current.pinnedRewardIndex,
             builder: (context, state) {
-              return ShaderMask(
-                blendMode: BlendMode.dstIn,
-                shaderCallback: (bounds) {
-                  final fadeWidth = 400.calc;
+              final pinnedRewardIndex = state.pinnedRewardIndex;
+              final visibleRewardIndices = <int>[
+                for (var index = 0; index < state.rewards.length; index++)
+                  if (index != pinnedRewardIndex) index,
+              ];
 
-                  final leftFade = state.isRewardsAtStart ? 0.0 : fadeWidth * 1.5;
+              return Stack(
+                children: [
+                  Positioned(
+                    left: 0,
+                    right: _pinnedRewardAreaWidth,
+                    top: 0,
+                    bottom: 0,
+                    child: ShaderMask(
+                      blendMode: BlendMode.dstIn,
+                      shaderCallback: (bounds) {
+                        final fadeWidth = 400.calc;
+                        final maxFade = bounds.width / 2;
+                        final leftFade = state.isRewardsAtStart ? 0.0 : (fadeWidth * 1.5).clamp(0.0, maxFade);
+                        final rightFade = state.isRewardsAtEnd ? 0.0 : fadeWidth.clamp(0.0, maxFade);
 
-                  final rightFade = state.isRewardsAtEnd ? 0.0 : fadeWidth;
+                        return LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          stops: [0.0, leftFade / bounds.width, 1.0 - rightFade / bounds.width, 1.0],
+                          colors: const [
+                            CustomColors.transparent,
+                            CustomColors.white100,
+                            CustomColors.white100,
+                            CustomColors.transparent,
+                          ],
+                        ).createShader(bounds);
+                      },
+                      child: ListView.builder(
+                        controller: scrollController,
+                        itemCount: visibleRewardIndices.length,
+                        padding: EdgeInsets.only(
+                          left:
+                              AppDimensions.navBarWidth +
+                              MediaQuery.viewPaddingOf(context).left +
+                              AppDimensions.padding51,
+                          right: AppDimensions.padding51,
+                        ),
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          final rewardIndex = visibleRewardIndices[index];
 
-                  final leftStop = leftFade / bounds.width;
-                  final rightStop = 1.0 - rightFade / bounds.width;
-
-                  return LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    stops: [
-                      0.0,
-                      leftStop,
-                      rightStop,
-                      1.0,
-                    ],
-                    colors: const [
-                      CustomColors.transparent,
-                      CustomColors.white100,
-                      CustomColors.white100,
-                      CustomColors.transparent,
-                    ],
-                  ).createShader(bounds);
-                },
-                child: ListView.builder(
-                  controller: scrollController,
-                  itemCount: state.rewards.length,
-                  padding: EdgeInsets.only(
-                    left: AppDimensions.navBarWidth + MediaQuery.viewPaddingOf(context).left + AppDimensions.padding51,
-                    right: AppDimensions.padding51,
+                          return _RewardItem(
+                            reward: state.rewards[rewardIndex],
+                            level: rewardIndex + 1,
+                          );
+                        },
+                      ),
+                    ),
                   ),
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    final reward = state.rewards[index];
-
-                    return _RewardItem(
-                      reward: reward,
-                      level: index + 1,
-                    );
-                  },
-                ),
+                  if (pinnedRewardIndex != null)
+                    Positioned(
+                      right: 0,
+                      top: 0,
+                      bottom: 0,
+                      width: _pinnedRewardAreaWidth,
+                      child: _RewardItem(
+                        reward: state.rewards[pinnedRewardIndex],
+                        level: pinnedRewardIndex + 1,
+                        displayAsReached: true,
+                        showProgressLine: false,
+                      ),
+                    ),
+                ],
               );
             },
           ),
@@ -111,14 +183,18 @@ class _BattlePassPageRewardsState extends State<BattlePassPageRewards> {
 class _RewardItem extends StatelessWidget {
   final IBattlePassReward reward;
   final int level;
+  final bool displayAsReached;
+  final bool showProgressLine;
 
   const _RewardItem({
     required this.reward,
     required this.level,
+    this.displayAsReached = false,
+    this.showProgressLine = true,
   });
 
   double get cardWidth {
-    return reward.status == BattlePassRewardStatus.reached ? 260.calc : 222.calc;
+    return displayAsReached || reward.status == BattlePassRewardStatus.reached ? 260.calc : 222.calc;
   }
 
   @override
@@ -127,11 +203,15 @@ class _RewardItem extends StatelessWidget {
       width: cardWidth,
       child: Stack(
         children: [
-          _Reward(reward: reward),
-
-          _ProgressLine(
-            isActive: reward.status == BattlePassRewardStatus.reached,
+          _Reward(
+            reward: reward,
+            displayAsReached: displayAsReached,
           ),
+
+          if (showProgressLine)
+            _ProgressLine(
+              isActive: reward.status == BattlePassRewardStatus.reached,
+            ),
 
           Positioned(
             left: (cardWidth / 1.2).calc,
@@ -216,10 +296,14 @@ class _ProgressPoint extends StatelessWidget {
 
 class _Reward extends StatelessWidget {
   final IBattlePassReward reward;
+  final bool displayAsReached;
 
   const _Reward({
     required this.reward,
+    required this.displayAsReached,
   });
+
+  bool get _isLarge => displayAsReached || reward.status == BattlePassRewardStatus.reached;
 
   List<Color> get gradientColors {
     switch (reward.rarity) {
@@ -267,8 +351,8 @@ class _Reward extends StatelessWidget {
                   Opacity(
                     opacity: reward.isClaimed ? .3 : 1,
                     child: Container(
-                      width: reward.status == BattlePassRewardStatus.reached ? 240.calc : 202.calc,
-                      height: reward.status == BattlePassRewardStatus.reached ? 218.calc : 183.calc,
+                      width: _isLarge ? 240.calc : 202.calc,
+                      height: _isLarge ? 218.calc : 183.calc,
                       margin: EdgeInsets.only(
                         right: 20.calc,
                         bottom: 110.calc,
@@ -347,7 +431,9 @@ class _Reward extends StatelessWidget {
 
                           Positioned(
                             right: 10.calc,
-                            bottom: reward.status == BattlePassRewardStatus.reached ? 80.calc : 10.calc,
+                            bottom: displayAsReached || reward.status != BattlePassRewardStatus.reached
+                                ? 10.calc
+                                : 80.calc,
                             child: Visibility(
                               visible: reward.count != 1,
                               child: Transform(
