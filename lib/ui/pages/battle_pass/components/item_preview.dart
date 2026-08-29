@@ -25,85 +25,102 @@ class BattlePassPageItemPreview extends StatelessWidget {
               return const SizedBox.shrink();
             }
 
-            return Column(
-              mainAxisAlignment: .center,
-              crossAxisAlignment: .center,
-              mainAxisSize: .min,
-              children: [
-                CustomImageAsset(
-                  assetPath: reward.image,
-                  width: 521.calc,
-                  height: 521.calc,
-                ),
-                Visibility(
-                  visible: reward.isPremium,
-                  child: Container(
-                    width: 324.calc,
-                    height: 39.calc,
-                    padding: .symmetric(horizontal: 12.calc, vertical: 4.calc),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(AppDimensions.radius30),
-                      gradient: const LinearGradient(
-                        begin: .topCenter,
-                        end: .bottomCenter,
-                        colors: CustomColors.yellowGradient2,
+            return AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              switchInCurve: Curves.easeOut,
+              switchOutCurve: Curves.easeIn,
+              transitionBuilder: (child, animation) {
+                return FadeTransition(
+                  opacity: animation,
+                  child: child,
+                );
+              },
+              child: Column(
+                key: ValueKey(reward.id),
+                mainAxisAlignment: .center,
+                crossAxisAlignment: .center,
+                mainAxisSize: .min,
+                children: [
+                  CustomImageAsset(
+                    assetPath: reward.image,
+                    width: 521.calc,
+                    height: 521.calc,
+                  ),
+                  Visibility(
+                    visible: reward.isPremium,
+                    child: Container(
+                      width: 324.calc,
+                      height: 39.calc,
+                      padding: .symmetric(
+                        horizontal: 12.calc,
+                        vertical: 4.calc,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(
+                          AppDimensions.radius30,
+                        ),
+                        gradient: const LinearGradient(
+                          begin: .topCenter,
+                          end: .bottomCenter,
+                          colors: CustomColors.yellowGradient2,
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          CustomSvgPicture(
+                            iconPath: SvgIconsAssets.crown,
+                            color: CustomColors.brown,
+                            width: 30.calc,
+                            height: 30.calc,
+                          ),
+                          SizedBox(width: 10.calc),
+                          Center(
+                            child: Text(
+                              'Доступно с прокачкой!',
+                              style: TextStyle(
+                                color: CustomColors.brown,
+                                fontWeight: .w500,
+                                fontSize: 22.calc,
+                                height: 1.2,
+                                letterSpacing: -0.22,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    child: Row(
-                      children: [
-                        CustomSvgPicture(
-                          iconPath: SvgIconsAssets.crown,
-                          color: CustomColors.brown,
-                          width: 30.calc,
-                          height: 30.calc,
-                        ),
-                        SizedBox(width: 10.calc),
-                        Center(
-                          child: Text(
-                            'Доступно с прокачкой!',
+                  ),
+                  SizedBox(height: 10.calc),
+                  Center(
+                    child: SizedBox(
+                      width: 400.calc,
+                      child: Row(
+                        crossAxisAlignment: .center,
+                        mainAxisAlignment: .center,
+                        children: [
+                          Text(
+                            reward.name,
                             style: TextStyle(
-                              color: CustomColors.brown,
-                              fontWeight: .w500,
-                              fontSize: 22.calc,
-                              height: 1.2,
+                              color: CustomColors.white100,
+                              fontWeight: .w600,
+                              fontSize: 36.calc,
+                              height: 1.3,
                               letterSpacing: -0.22,
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(height: 10.calc),
-                Center(
-                  child: SizedBox(
-                    width: 400.calc,
-                    child: Row(
-                      crossAxisAlignment: .center,
-                      mainAxisAlignment: .center,
-                      children: [
-                        Text(
-                          reward.name,
-                          style: TextStyle(
+                          SizedBox(width: 16.calc),
+                          CustomSvgPicture(
+                            iconPath: SvgIconsAssets.info,
                             color: CustomColors.white100,
-                            fontWeight: .w600,
-                            fontSize: 36.calc,
-                            height: 1.3,
-                            letterSpacing: -0.22,
+                            width: 36.calc,
+                            height: 36.calc,
                           ),
-                        ),
-                        SizedBox(width: 16.calc),
-                        CustomSvgPicture(
-                          iconPath: SvgIconsAssets.info,
-                          color: CustomColors.white100,
-                          width: 36.calc,
-                          height: 36.calc,
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             );
           },
         ),
