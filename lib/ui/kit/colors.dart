@@ -19,6 +19,8 @@ abstract final class CustomColors {
   static const red = Color.fromRGBO(215, 39, 0, 1);
   static const backgroundColor = Color(0xFF2d2e34);
   static const green = Color.fromRGBO(86, 184, 119, 1);
+  static const yellow = Color.fromRGBO(255, 209, 73, 1);
+  static const dark60 = Color.fromRGBO(24, 25, 31, 0.6);
   static const orangeGradient = [
     Color.fromRGBO(214, 58, 38, 1),
     Color.fromRGBO(239, 100, 41, 1),
@@ -31,5 +33,28 @@ abstract final class CustomColors {
     Color.fromRGBO(239, 203, 76, 1),
     Color.fromRGBO(246, 116, 60, 1),
   ];
-  static const yellow = Color.fromRGBO(255, 209, 73, 1);
+  static const grayGradient = [
+    Color.fromRGBO(41, 41, 44, 1),
+    Color.fromRGBO(46, 46, 49, 1),
+    Color.fromRGBO(66, 67, 69, 1),
+  ];
+  static const blueGradient = [
+    Color.fromRGBO(34, 36, 49, 1),
+    Color.fromRGBO(31, 51, 81, 1),
+    Color.fromRGBO(38, 83, 116, 1),
+  ];
+  static const purpleGradient = [
+    Color.fromRGBO(44, 35, 42, 1),
+    Color.fromRGBO(74, 36, 66, 1),
+    Color.fromRGBO(97, 17, 99, 1),
+  ];
+  static const darkOrangeGradient = [
+    Color.fromRGBO(44, 35, 35, 1),
+    Color.fromRGBO(67, 39, 35, 1),
+    Color.fromRGBO(122, 44, 0, 1),
+  ];
+  static const greenGradient = [
+    Color.fromRGBO(86, 184, 119, 1),
+    Color.fromRGBO(68, 150, 96, 1),
+  ];
 }
