@@ -27,30 +27,32 @@ class BattlePassPageItemPreview extends StatelessWidget {
 
             return AnimatedSwitcher(
               duration: const Duration(milliseconds: 300),
-              switchInCurve: Curves.easeOut,
-              switchOutCurve: Curves.easeIn,
+              switchInCurve: Curves.linear,
+              switchOutCurve: Curves.linear,
               transitionBuilder: (child, animation) {
                 return FadeTransition(
                   opacity: animation,
                   child: child,
                 );
               },
-              child: Column(
+              child: Stack(
                 key: ValueKey(reward.id),
-                mainAxisAlignment: .center,
-                crossAxisAlignment: .center,
-                mainAxisSize: .min,
+                alignment: .center,
                 children: [
-                  CustomImageAsset(
-                    assetPath: reward.image,
-                    width: 521.calc,
-                    height: 521.calc,
+                  Align(
+                    alignment: .topCenter,
+                    child: CustomImageAsset(
+                      assetPath: reward.image,
+                      width: 521.calc,
+                      height: 521.calc,
+                    ),
                   ),
                   Visibility(
                     visible: reward.isPremium,
                     child: Container(
                       width: 324.calc,
                       height: 39.calc,
+                      margin: .only(top: 50.calc),
                       padding: .symmetric(
                         horizontal: 12.calc,
                         vertical: 4.calc,
@@ -90,10 +92,10 @@ class BattlePassPageItemPreview extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 10.calc),
                   Center(
-                    child: SizedBox(
+                    child: Container(
                       width: 400.calc,
+                      padding: .only(top: 180.calc),
                       child: Row(
                         crossAxisAlignment: .center,
                         mainAxisAlignment: .center,
