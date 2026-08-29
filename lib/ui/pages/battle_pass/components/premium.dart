@@ -167,8 +167,8 @@ class _Content extends StatelessWidget {
                     config.subTitle,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      letterSpacing: -0.22,
-                      height: 1.2,
+                      letterSpacing: AppDimensions.letterSpacing22,
+                      height: AppDimensions.lineHeight,
                       color: CustomColors.white70,
                       fontWeight: FontWeight.w500,
                       fontSize: 22.calc,
@@ -262,8 +262,8 @@ class _Button extends StatelessWidget {
               title,
               style: TextStyle(
                 fontSize: isEnabled ? 30.calc : 22.calc,
-                height: 1.2,
-                letterSpacing: -0.22,
+                height: AppDimensions.lineHeight,
+                letterSpacing: AppDimensions.letterSpacing22,
                 color: isEnabled ? CustomColors.brown : CustomColors.white70,
                 fontWeight: FontWeight.w500,
               ),
