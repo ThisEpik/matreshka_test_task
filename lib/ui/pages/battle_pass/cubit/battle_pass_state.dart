@@ -5,12 +5,14 @@ final class BattlePassState {
   final int tasksPickedIndex;
   final List<IBattlePassTask> tasks;
   final List<IBattlePassReward> rewards;
+  final IBattlePassReward? pickedReward;
 
   BattlePassState({
     required this.battlePassProgressionState,
     required this.tasksPickedIndex,
     required this.tasks,
     required this.rewards,
+    required this.pickedReward,
   });
 
   BattlePassState copyWith({
@@ -18,12 +20,14 @@ final class BattlePassState {
     int? tasksPickedIndex,
     List<IBattlePassTask>? tasks,
     List<IBattlePassReward>? rewards,
+    IBattlePassReward? pickedReward,
   }) {
     return BattlePassState(
       battlePassProgressionState: battlePassProgressionState ?? this.battlePassProgressionState,
       tasksPickedIndex: tasksPickedIndex ?? this.tasksPickedIndex,
       tasks: tasks ?? this.tasks,
       rewards: rewards ?? this.rewards,
+      pickedReward: pickedReward ?? this.pickedReward,
     );
   }
 }

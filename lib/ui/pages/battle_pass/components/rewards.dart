@@ -66,149 +66,154 @@ class _Reward extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Transform(
-        alignment: Alignment.center,
-        transform: Matrix4.identity()
-          ..setEntry(3, 2, 0.002)
-          ..setEntry(0, 1, -0.08)
-          ..translateByDouble(-5.0, 0.0, 0.0, 1.0),
-        child: Stack(
-          children: [
-            Opacity(
-              opacity: reward.status == BattlePassRewardStatus.claimed ? .3 : 1,
-              child: Container(
-                width: reward.status == BattlePassRewardStatus.reached ? 240.calc : 202.calc,
-                height: reward.status == BattlePassRewardStatus.reached ? 218.calc : 183.calc,
-                margin: .only(right: 20.calc),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(AppDimensions.radius30),
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: gradientColors,
+    return GestureDetector(
+      onTapDown: (_) {
+        context.read<BattlePassCubit>().pickReward(reward);
+      },
+      child: Center(
+        child: Transform(
+          alignment: Alignment.center,
+          transform: Matrix4.identity()
+            ..setEntry(3, 2, 0.002)
+            ..setEntry(0, 1, -0.08)
+            ..translateByDouble(-5.0, 0.0, 0.0, 1.0),
+          child: Stack(
+            children: [
+              Opacity(
+                opacity: reward.status == BattlePassRewardStatus.claimed ? .3 : 1,
+                child: Container(
+                  width: reward.status == BattlePassRewardStatus.reached ? 240.calc : 202.calc,
+                  height: reward.status == BattlePassRewardStatus.reached ? 218.calc : 183.calc,
+                  margin: .only(right: 20.calc),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(AppDimensions.radius30),
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: gradientColors,
+                    ),
+                    border: reward.status == BattlePassRewardStatus.reached
+                        ? Border.all(
+                            color: CustomColors.green,
+                            width: 1.5,
+                          )
+                        : null,
                   ),
-                  border: reward.status == BattlePassRewardStatus.reached
-                      ? Border.all(
-                          color: CustomColors.green,
-                          width: 1.5,
-                        )
-                      : null,
-                ),
-                child: Stack(
-                  children: [
-                    Center(
-                      child: CustomImageAsset(
-                        assetPath: reward.image,
-                        width: 152.calc,
-                        height: 152.calc,
-                      ),
-                    ),
-                    Positioned(
-                      top: 10.calc,
-                      left: 10.calc,
-                      child: Visibility(
-                        visible: reward.isPremium,
-                        replacement: Container(
-                          width: 55.calc,
-                          height: 50.calc,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(AppDimensions.radius30.calc),
-                            color: CustomColors.dark60,
-                          ),
-                          child: Center(
-                            child: CustomSvgPicture(
-                              iconPath: SvgIconsAssets.present,
-                              color: CustomColors.white60,
-                              width: 36.calc,
-                              height: 36.calc,
-                            ),
-                          ),
-                        ),
-                        child: Container(
-                          width: 55.calc,
-                          height: 50.calc,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(AppDimensions.radius30.calc),
-                            gradient: const LinearGradient(
-                              begin: .topCenter,
-                              end: .bottomCenter,
-                              colors: CustomColors.yellowGradient2,
-                            ),
-                          ),
-                          child: Center(
-                            child: CustomSvgPicture(
-                              iconPath: SvgIconsAssets.crown,
-                              color: CustomColors.brown,
-                              width: 36.calc,
-                              height: 36.calc,
-                            ),
-                          ),
+                  child: Stack(
+                    children: [
+                      Center(
+                        child: CustomImageAsset(
+                          assetPath: reward.image,
+                          width: 152.calc,
+                          height: 152.calc,
                         ),
                       ),
-                    ),
-                    Positioned(
-                      right: 10.calc,
-                      bottom: reward.status == BattlePassRewardStatus.reached ? 80.calc : 10.calc,
-                      child: Visibility(
-                        visible: reward.count != 1,
-                        child: Transform(
-                          alignment: Alignment.center,
-                          transform: Matrix4.identity()
-                            ..setEntry(3, 2, 0.002)
-                            ..setEntry(0, 1, -0.08),
-                          child: Container(
-                            width: 69.calc,
-                            height: 36.calc,
+                      Positioned(
+                        top: 10.calc,
+                        left: 10.calc,
+                        child: Visibility(
+                          visible: reward.isPremium,
+                          replacement: Container(
+                            width: 55.calc,
+                            height: 50.calc,
                             decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(AppDimensions.radius30.calc),
                               color: CustomColors.dark60,
-                              borderRadius: BorderRadius.circular(12.calc),
                             ),
-                            alignment: Alignment.center,
-                            child: Text(
-                              'x${reward.count}',
-                              style: TextStyle(
-                                fontSize: 26.calc,
-                                fontWeight: .w500,
-                                color: CustomColors.white100,
+                            child: Center(
+                              child: CustomSvgPicture(
+                                iconPath: SvgIconsAssets.present,
+                                color: CustomColors.white60,
+                                width: 36.calc,
+                                height: 36.calc,
+                              ),
+                            ),
+                          ),
+                          child: Container(
+                            width: 55.calc,
+                            height: 50.calc,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(AppDimensions.radius30.calc),
+                              gradient: const LinearGradient(
+                                begin: .topCenter,
+                                end: .bottomCenter,
+                                colors: CustomColors.yellowGradient2,
+                              ),
+                            ),
+                            child: Center(
+                              child: CustomSvgPicture(
+                                iconPath: SvgIconsAssets.crown,
+                                color: CustomColors.brown,
+                                width: 36.calc,
+                                height: 36.calc,
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    Visibility(
-                      visible: reward.status == BattlePassRewardStatus.reached,
-                      child: Align(
-                        alignment: .bottomCenter,
-                        child: GestureDetector(
-                          onTapDown: (_) {},
+                      Positioned(
+                        right: 10.calc,
+                        bottom: reward.status == BattlePassRewardStatus.reached ? 80.calc : 10.calc,
+                        child: Visibility(
+                          visible: reward.count != 1,
                           child: Transform(
                             alignment: Alignment.center,
                             transform: Matrix4.identity()
                               ..setEntry(3, 2, 0.002)
                               ..setEntry(0, 1, -0.08),
                             child: Container(
-                              width: double.infinity,
-                              height: 60.calc,
-                              margin: .all(13.calc),
+                              width: 69.calc,
+                              height: 36.calc,
                               decoration: BoxDecoration(
-                                gradient: const LinearGradient(
-                                  begin: .topCenter,
-                                  end: .bottomCenter,
-                                  colors: CustomColors.greenGradient,
-                                ),
-                                borderRadius: BorderRadius.circular(20.calc),
+                                color: CustomColors.dark60,
+                                borderRadius: BorderRadius.circular(12.calc),
                               ),
-                              child: Center(
-                                child: Text(
-                                  'Забрать',
-                                  style: TextStyle(
-                                    color: CustomColors.white100,
-                                    fontWeight: .w500,
-                                    fontSize: 26.calc,
-                                    height: AppDimensions.lineHeight,
-                                    wordSpacing: AppDimensions.letterSpacing22,
+                              alignment: Alignment.center,
+                              child: Text(
+                                'x${reward.count}',
+                                style: TextStyle(
+                                  fontSize: 26.calc,
+                                  fontWeight: .w500,
+                                  color: CustomColors.white100,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Visibility(
+                        visible: reward.status == BattlePassRewardStatus.reached,
+                        child: Align(
+                          alignment: .bottomCenter,
+                          child: GestureDetector(
+                            onTapDown: (_) {},
+                            child: Transform(
+                              alignment: Alignment.center,
+                              transform: Matrix4.identity()
+                                ..setEntry(3, 2, 0.002)
+                                ..setEntry(0, 1, -0.08),
+                              child: Container(
+                                width: double.infinity,
+                                height: 60.calc,
+                                margin: .all(13.calc),
+                                decoration: BoxDecoration(
+                                  gradient: const LinearGradient(
+                                    begin: .topCenter,
+                                    end: .bottomCenter,
+                                    colors: CustomColors.greenGradient,
+                                  ),
+                                  borderRadius: BorderRadius.circular(20.calc),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    'Забрать',
+                                    style: TextStyle(
+                                      color: CustomColors.white100,
+                                      fontWeight: .w500,
+                                      fontSize: 26.calc,
+                                      height: AppDimensions.lineHeight,
+                                      wordSpacing: AppDimensions.letterSpacing22,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -216,25 +221,25 @@ class _Reward extends StatelessWidget {
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Visibility(
-              visible: reward.status == BattlePassRewardStatus.claimed,
-              child: Positioned(
-                top: 15.calc,
-                right: 35.calc,
-                child: CustomSvgPicture(
-                  iconPath: SvgIconsAssets.done,
-                  width: 48.calc,
-                  height: 48.calc,
-                  color: CustomColors.green,
+              Visibility(
+                visible: reward.status == BattlePassRewardStatus.claimed,
+                child: Positioned(
+                  top: 15.calc,
+                  right: 35.calc,
+                  child: CustomSvgPicture(
+                    iconPath: SvgIconsAssets.done,
+                    width: 48.calc,
+                    height: 48.calc,
+                    color: CustomColors.green,
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

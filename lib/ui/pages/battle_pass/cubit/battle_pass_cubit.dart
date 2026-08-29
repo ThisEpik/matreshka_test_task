@@ -16,6 +16,7 @@ class BattlePassCubit extends Cubit<BattlePassState> {
           tasksPickedIndex: 0,
           tasks: [],
           rewards: [],
+          pickedReward: null,
         ),
       );
 
@@ -38,5 +39,9 @@ class BattlePassCubit extends Cubit<BattlePassState> {
 
   void changeTasksIndex(int index) {
     emit(state.copyWith(tasksPickedIndex: index));
+  }
+
+  void pickReward(IBattlePassReward newReward) {
+    emit(state.copyWith(pickedReward: newReward));
   }
 }
