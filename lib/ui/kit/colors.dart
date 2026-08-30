@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 abstract final class CustomColors {
+  /// --------- Colors
+
   static const transparent = Colors.transparent;
   static const purple = Color.fromRGBO(21, 23, 39, 0.7);
   static const white = Color.fromRGBO(255, 255, 255, 1);
@@ -22,6 +24,8 @@ abstract final class CustomColors {
   static const green = Color.fromRGBO(86, 184, 119, 1);
   static const yellow = Color.fromRGBO(255, 209, 73, 1);
   static const dark60 = Color.fromRGBO(24, 25, 31, 0.6);
+
+  /// --------- Gradients
 
   static const orangeGradient = [
     Color.fromRGBO(214, 58, 38, 1),
@@ -59,4 +63,8 @@ abstract final class CustomColors {
     Color.fromRGBO(86, 184, 119, 1),
     Color.fromRGBO(68, 150, 96, 1),
   ];
+
+  /// --------- Shadows
+
+  static const yellowShadow = Color.fromRGBO(255, 138, 0, 0.7);
 }

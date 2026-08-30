@@ -236,6 +236,14 @@ class _Button extends StatelessWidget {
         width: 400.calc,
         height: 100.calc,
         decoration: BoxDecoration(
+          boxShadow: [
+            if (isEnabled)
+              BoxShadow(
+                color: CustomColors.yellowShadow,
+                blurRadius: 41.5.calc,
+                offset: const Offset(0, 0),
+              ),
+          ],
           borderRadius: BorderRadius.circular(AppDimensions.radius30),
           gradient: isEnabled
               ? const LinearGradient(

@@ -467,6 +467,13 @@ class _Reward extends StatelessWidget {
                           color: borderColor,
                           width: 1.5,
                         ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: borderColor,
+                            blurRadius: 45.1.calc,
+                            offset: const Offset(0, 0),
+                          ),
+                        ],
                       ),
                       child: Stack(
                         children: [
