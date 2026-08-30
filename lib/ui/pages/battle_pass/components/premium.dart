@@ -149,40 +149,51 @@ class _Content extends StatelessWidget {
             progressionState: progressionState,
           ),
           Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(height: 200.calc),
-                Text(
-                  config.title,
-                  style: TextStyle(
-                    color: CustomColors.yellow,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 36.calc,
-                  ),
-                ),
-                SizedBox(
-                  width: 400.calc,
-                  child: Text(
-                    config.subTitle,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      letterSpacing: AppDimensions.letterSpacing22,
-                      height: AppDimensions.lineHeight,
-                      color: CustomColors.white70,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 22.calc,
+            child: SizedBox(
+              width: 400.calc,
+              height: 450.calc,
+              child: Column(
+                children: [
+                  SizedBox(height: 200.calc),
+                  SizedBox(
+                    height: 44.calc,
+                    child: Center(
+                      child: Text(
+                        config.title,
+                        style: TextStyle(
+                          color: CustomColors.yellow,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 36.calc,
+                          height: 1.3,
+                          letterSpacing: AppDimensions.letterSpacing22,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(height: 27.calc),
-                _Button(
-                  onTap: onTap,
-                  title: config.buttonTitle,
-                  iconPath: config.buttonIconPath,
-                  isEnabled: config.isEnabled,
-                ),
-              ],
+                  SizedBox(
+                    height: 78.calc,
+                    width: 400.calc,
+                    child: Text(
+                      config.subTitle,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        letterSpacing: AppDimensions.letterSpacing22,
+                        height: AppDimensions.lineHeight,
+                        color: CustomColors.white70,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 22.calc,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 27.calc),
+                  _Button(
+                    onTap: onTap,
+                    title: config.buttonTitle,
+                    iconPath: config.buttonIconPath,
+                    isEnabled: config.isEnabled,
+                  ),
+                ],
+              ),
             ),
           ),
         ],
