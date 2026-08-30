@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:matreshka_test_task/domain/enums/battle_pass_reward_rarity.dart';
 import 'package:matreshka_test_task/domain/enums/battle_pass_reward_status.dart';
 import 'package:matreshka_test_task/domain/models/battle_pass_reward.dart';
+import 'package:matreshka_test_task/ui/global_components/circle_button.dart';
 import 'package:matreshka_test_task/ui/global_components/custom_image_asset.dart';
 import 'package:matreshka_test_task/ui/global_components/custom_svg_picture.dart';
 import 'package:matreshka_test_task/ui/helpers/adaptive_sizes.dart';
@@ -10,6 +11,9 @@ import 'package:matreshka_test_task/ui/kit/app_dimensions.dart';
 import 'package:matreshka_test_task/ui/kit/colors.dart';
 import 'package:matreshka_test_task/ui/kit/svg_icons.dart';
 import 'package:matreshka_test_task/ui/pages/battle_pass/cubit/battle_pass_cubit.dart';
+
+/// Вот тут UI я сам писал, потом решил поиграться с агентом.
+/// И логику тут по большей части писал Codex.
 
 class BattlePassPageRewards extends StatefulWidget {
   const BattlePassPageRewards({super.key});
@@ -80,6 +84,75 @@ class _BattlePassPageRewardsState extends State<BattlePassPageRewards> {
 
   double _rewardItemWidth(IBattlePassReward reward) {
     return reward.status == BattlePassRewardStatus.reached ? 260.calc : 222.calc;
+  }
+
+  void _scrollByRewards(int direction) {
+    if (!scrollController.hasClients) {
+      return;
+    }
+
+    final state = context.read<BattlePassCubit>().state;
+    final rewardIndices = <int>[
+      for (var index = 0; index < state.rewards.length; index++)
+        if (index != state.pinnedRewardIndex) index,
+    ];
+
+    if (rewardIndices.isEmpty) {
+      return;
+    }
+
+    final leadingPadding = AppDimensions.navBarWidth + MediaQuery.viewPaddingOf(context).left + AppDimensions.padding51;
+    final currentOffset = scrollController.offset;
+    var itemStart = leadingPadding;
+    var currentItemIndex = 0;
+
+    for (var index = 0; index < rewardIndices.length; index++) {
+      final itemEnd = itemStart + _rewardItemWidth(state.rewards[rewardIndices[index]]);
+
+      if (currentOffset < itemEnd) {
+        currentItemIndex = index;
+        break;
+      }
+
+      itemStart = itemEnd;
+      currentItemIndex = index;
+    }
+
+    final targetItemIndex = (currentItemIndex + direction * 10).clamp(0, rewardIndices.length - 1).toInt();
+    var targetOffset = leadingPadding;
+
+    for (var index = 0; index < targetItemIndex; index++) {
+      targetOffset += _rewardItemWidth(state.rewards[rewardIndices[index]]);
+    }
+
+    final isFirstPage = direction < 0 && targetItemIndex == 0;
+    final isLastPage = direction > 0 && targetItemIndex >= rewardIndices.length - 10;
+    final targetScrollOffset = isFirstPage
+        ? scrollController.position.minScrollExtent
+        : isLastPage
+        ? scrollController.position.maxScrollExtent
+        : targetOffset
+              .clamp(
+                scrollController.position.minScrollExtent,
+                scrollController.position.maxScrollExtent,
+              )
+              .toDouble();
+
+    final scrollAnimation = scrollController.animateTo(
+      targetScrollOffset,
+      duration: const Duration(milliseconds: 350),
+      curve: Curves.easeOutCubic,
+    );
+
+    if (isLastPage) {
+      scrollAnimation.whenComplete(() {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted && scrollController.hasClients) {
+            scrollController.jumpTo(scrollController.position.maxScrollExtent);
+          }
+        });
+      });
+    }
   }
 
   @override
@@ -170,6 +243,30 @@ class _BattlePassPageRewardsState extends State<BattlePassPageRewards> {
                         showProgressLine: false,
                       ),
                     ),
+
+                  Positioned(
+                    left: AppDimensions.navBarWidth + MediaQuery.viewPaddingOf(context).left + AppDimensions.padding51,
+                    top: 60.calc,
+                    child: Opacity(
+                      opacity: state.isRewardsAtStart ? 0 : 1,
+                      child: CustomCircleButton(
+                        onTap: state.isRewardsAtStart ? null : () => _scrollByRewards(-1),
+                        iconPath: SvgIconsAssets.chevronLeft,
+                      ),
+                    ),
+                  ),
+
+                  Positioned(
+                    right: _pinnedRewardAreaWidth + 20.calc + AppDimensions.padding51,
+                    top: 60.calc,
+                    child: Opacity(
+                      opacity: state.isRewardsAtEnd ? 0 : 1,
+                      child: CustomCircleButton(
+                        onTap: state.isRewardsAtEnd ? null : () => _scrollByRewards(1),
+                        iconPath: SvgIconsAssets.chevronRight,
+                      ),
+                    ),
+                  ),
                 ],
               );
             },
