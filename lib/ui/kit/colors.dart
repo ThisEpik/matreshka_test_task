@@ -22,6 +22,7 @@ abstract final class CustomColors {
   static const red2 = Color.fromRGBO(239, 64, 41, 1);
   static const backgroundColor = Color(0xFF2d2e34);
   static const green = Color.fromRGBO(86, 184, 119, 1);
+  static const secondary110 = Color.fromRGBO(104, 194, 134, 1);
   static const yellow = Color.fromRGBO(255, 209, 73, 1);
   static const dark60 = Color.fromRGBO(24, 25, 31, 0.6);
 
@@ -59,9 +60,14 @@ abstract final class CustomColors {
     Color.fromRGBO(67, 39, 35, 1),
     Color.fromRGBO(122, 44, 0, 1),
   ];
-  static const greenGradient = [
+  static const greenGradient1 = [
     Color.fromRGBO(86, 184, 119, 1),
     Color.fromRGBO(68, 150, 96, 1),
+  ];
+
+  static const greenGradient2 = [
+    Color.fromRGBO(85, 182, 117, 1),
+    Color.fromRGBO(68, 151, 97, 1),
   ];
 
   /// --------- Shadows

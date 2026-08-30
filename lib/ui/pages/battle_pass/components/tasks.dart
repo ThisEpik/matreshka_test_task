@@ -115,7 +115,9 @@ class _BattlePassPageTasksState extends State<BattlePassPageTasks> {
                       }).toList(),
                     ),
 
-                    const _Button(),
+                    _Button(
+                      isComplete: state.tasks[state.tasksPickedIndex].isComplete,
+                    ),
                   ],
                 );
               },
@@ -128,7 +130,11 @@ class _BattlePassPageTasksState extends State<BattlePassPageTasks> {
 }
 
 class _Button extends StatelessWidget {
-  const _Button();
+  final bool isComplete;
+
+  const _Button({
+    required this.isComplete,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -145,7 +151,18 @@ class _Button extends StatelessWidget {
         width: 320.calc,
         height: 74.calc,
         decoration: BoxDecoration(
-          color: CustomColors.white10,
+          color: isComplete ? null : CustomColors.white10,
+          gradient: isComplete
+              ? LinearGradient(
+                  begin: .topCenter,
+                  end: .bottomCenter,
+                  colors: CustomColors.greenGradient2
+                      .map(
+                        (e) => e.withValues(alpha: 0.5),
+                      )
+                      .toList(),
+                )
+              : null,
           borderRadius: BorderRadius.circular(
             AppDimensions.radius30,
           ),
@@ -153,16 +170,17 @@ class _Button extends StatelessWidget {
         child: Row(
           mainAxisAlignment: .center,
           children: [
-            CustomSvgPicture(
-              iconPath: SvgIconsAssets.checkbox,
-              width: 30.calc,
-              height: 30.calc,
-            ),
+            if (!isComplete)
+              CustomSvgPicture(
+                iconPath: SvgIconsAssets.checkbox,
+                width: 30.calc,
+                height: 30.calc,
+              ),
             SizedBox(width: 16.calc),
             Text(
-              'Задания',
+              isComplete ? 'Забрать опыт' : 'Задания',
               style: TextStyle(
-                color: CustomColors.white100,
+                color: isComplete ? CustomColors.secondary110 : CustomColors.white100,
                 fontSize: 26.calc,
                 fontWeight: .w500,
                 height: AppDimensions.lineHeight,

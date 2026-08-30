@@ -584,7 +584,7 @@ class _Reward extends StatelessWidget {
                                       gradient: const LinearGradient(
                                         begin: Alignment.topCenter,
                                         end: Alignment.bottomCenter,
-                                        colors: CustomColors.greenGradient,
+                                        colors: CustomColors.greenGradient1,
                                       ),
                                       borderRadius: BorderRadius.circular(20.calc),
                                     ),
