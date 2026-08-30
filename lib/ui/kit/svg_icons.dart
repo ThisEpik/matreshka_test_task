@@ -3,6 +3,8 @@ abstract final class SvgIconsAssets {
   static const calendar1 = 'assets/svg_icons/calendar1.svg';
   static const calendar2 = 'assets/svg_icons/calendar2.svg';
   static const checkbox = 'assets/svg_icons/checkbox.svg';
+  static const chevronLeft = 'assets/svg_icons/chevron_left.svg';
+  static const chevronRight = 'assets/svg_icons/chevron_right.svg';
   static const close = 'assets/svg_icons/close.svg';
   static const coctail = 'assets/svg_icons/coctail.svg';
   static const crown = 'assets/svg_icons/crown.svg';
